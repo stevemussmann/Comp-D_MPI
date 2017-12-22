@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <random>
 
 fourtax::fourtax(int locusnum, int taxnum) {
 	number.resize(locusnum);
