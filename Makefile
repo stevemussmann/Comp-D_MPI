@@ -1,4 +1,4 @@
-all : dtest
+all : compDmpi
 
 Stats.o : Stats.h Stats.cpp
 	g++ -O3 -std=c++11 -Wall -c Stats.cpp
@@ -36,8 +36,8 @@ popZDfoil.o : popZDfoil.h popZDfoil.cpp Stats.h Dstat.h DstatParent.h
 dstat_main.o : dstat_main.cpp fourtax.h partD.h Dfoil.h locusfile.h popZParent.h popZDstat.h popZpartD.h popZDfoil.h
 	mpic++ -O3 -std=c++11  -Wall -c dstat_main.cpp
 
-dtest : fourtax.o locusfile.o Stats.o DstatParent.o Dstat.o partD.o Dfoil.o popZParent.o popZDstat.o popZpartD.o popZDfoil.o dstat_main.o 
-	mpic++ -O3 -std=c++11 -Wall -o dtest fourtax.o locusfile.o Stats.o DstatParent.o Dstat.o partD.o Dfoil.o popZParent.o popZDstat.o popZpartD.o popZDfoil.o dstat_main.o -lboost_program_options -lpthread
+compDmpi : fourtax.o locusfile.o Stats.o DstatParent.o Dstat.o partD.o Dfoil.o popZParent.o popZDstat.o popZpartD.o popZDfoil.o dstat_main.o 
+	mpic++ -O3 -std=c++11 -Wall -o compDmpi fourtax.o locusfile.o Stats.o DstatParent.o Dstat.o partD.o Dfoil.o popZParent.o popZDstat.o popZpartD.o popZDfoil.o dstat_main.o -lboost_program_options -lpthread
 
 clean:
-	rm *.o dtest
+	rm *.o compDmpi
