@@ -41,3 +41,6 @@ compDmpi : fourtax.o locusfile.o Stats.o DstatParent.o Dstat.o partD.o Dfoil.o p
 
 clean:
 	rm *.o compDmpi
+
+install:
+	cp compDmpi /usr/local/bin/.
