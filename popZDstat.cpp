@@ -18,10 +18,10 @@ void popZDstat::add(DstatParent *d){
 }
 
 void popZDstat::calcStats(std::string filename){
-    dstatZ();
+    dstatZ(filename);
 }
 
-void popZDstat::dstatZ(){
+void popZDstat::dstatZ(std::string filename){
 	double* Darr = this->toArr(D, D.size());
 	
 	double avgD = this->average(Darr, D.size());
@@ -33,5 +33,12 @@ void popZDstat::dstatZ(){
 	boost::math::normal_distribution<> zdist(0.0, 1.0);
 	double ZDpval = 2.0*(1-boost::math::cdf(zdist, abs(ZD)));
 	
-	std::cout << ZD << "\t" << ZDpval << std::endl;
+	std::ofstream popout;
+	popout.open(filename, std::ios::out);
+	if(popout.is_open())
+	{
+		popout << "Statistic" << "\t" << "Z-score" << "\t" << "P-val" << std::endl;
+		popout << "D" << "\t" << ZD << "\t" << ZDpval << std::endl;
+	}
+	popout.close();
 }

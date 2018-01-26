@@ -13,7 +13,7 @@ public:
     popZDstat();
     void add(DstatParent *d) override;
     void calcStats(std::string filename) override;
-    void dstatZ();
+    void dstatZ(std::string filename);
 private:
     std::vector<double> D;
 };
