@@ -273,6 +273,7 @@ int main(int argc, char** argv) {
     if(my_rank == 0)
     {
 	pop->calcStats(popoutput);
+	std::cout << "Population summary Z-scores were written to " << popoutput << std::endl;
     }
     
     delete pop;
