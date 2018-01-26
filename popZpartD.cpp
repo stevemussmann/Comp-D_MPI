@@ -19,7 +19,7 @@ void popZpartD::add(DstatParent *d){
     D12.push_back(nd->getD12());
 }
 
-void popZpartD::calcStats(){
+void popZpartD::calcStats(std::string filename){
     partdZ();
 }
 

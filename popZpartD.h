@@ -11,7 +11,7 @@ class popZpartD: public popZParent {
 public:
     popZpartD();
     void add(DstatParent *d) override;
-    void calcStats() override;
+    void calcStats(std::string filename) override;
     void partdZ();
 private:
     std::vector<double> D1;

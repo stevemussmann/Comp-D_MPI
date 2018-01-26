@@ -12,7 +12,7 @@ class popZDstat: public popZParent {
 public:
     popZDstat();
     void add(DstatParent *d) override;
-    void calcStats() override;
+    void calcStats(std::string filename) override;
     void dstatZ();
 private:
     std::vector<double> D;

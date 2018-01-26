@@ -12,8 +12,8 @@ class popZDfoil: public popZParent {
 public:
     popZDfoil();
     void add(DstatParent *d) override;
-    void calcStats() override;
-    void dfoilZ();
+    void calcStats(std::string filename) override;
+    void dfoilZ(std::string filename);
 private:
     std::vector<double> DFO;
     std::vector<double> DIL;

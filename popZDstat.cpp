@@ -17,7 +17,7 @@ void popZDstat::add(DstatParent *d){
     D.push_back(nd->getD());
 }
 
-void popZDstat::calcStats(){
+void popZDstat::calcStats(std::string filename){
     dstatZ();
 }
 
