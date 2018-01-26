@@ -20,10 +20,10 @@ void popZpartD::add(DstatParent *d){
 }
 
 void popZpartD::calcStats(std::string filename){
-    partdZ();
+    partdZ(filename);
 }
 
-void popZpartD::partdZ(){
+void popZpartD::partdZ(std::string filename){
 	//calculate avg from bootstrapping
 	double* D1arr = this->toArr(D1, D1.size());
 	double* D2arr = this->toArr(D2, D2.size());
@@ -48,8 +48,15 @@ void popZpartD::partdZ(){
 	double ZD1pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD1)));
 	double ZD2pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD2)));
 	double ZD12pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD12)));
-	
-	std::cout << ZD1 << "\t" << ZD1pval << std::endl;
-	std::cout << ZD2 << "\t" << ZD2pval << std::endl;
-	std::cout << ZD12 << "\t" << ZD12pval << std::endl;
+
+	std::ofstream popout;
+	popout.open(filename, std::ios::out);
+	if(popout.is_open())
+	{
+		popout << "Statistic" << "\t" << "Z-score" << "\t" << "P-val" << std::endl;
+		popout << "D1" << "\t" << ZD1 << "\t" << ZD1pval << std::endl;
+		popout << "D2" << "\t" << ZD2 << "\t" << ZD2pval << std::endl;
+		popout << "D12" << "\t" << ZD12 << "\t" << ZD12pval << std::endl;
+	}
+	popout.close();
 }
