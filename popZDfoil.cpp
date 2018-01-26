@@ -65,5 +65,6 @@ void popZDfoil::dfoilZ(std::string filename){
 		popout << "DFI" << "\t" << ZDFI << "\t" << ZDFIpval << std::endl;
 		popout << "DOL" << "\t" << ZDOL << "\t" << ZDOLpval << std::endl;
 	}
+	popout.close();
 }
 
