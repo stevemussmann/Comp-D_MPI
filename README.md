@@ -71,6 +71,13 @@ mpirun -np 4 compDmpi -i genotypes.phy -t taxa.txt -b 1000 -l 14000 -PdH
 ## Outputs
 The program writes two output files.  If you have not instructed the program to use special names for these files using the -o and -Z options, then they will be named "outfile.txt" and "popZscores.txt" respectively.
 
+In order to ensure the output files are easily readable, you may try using the column command in Linux:
+```
+column -ts $'\t' outfile.txt
+```
+
+Or alternatively, open the file in Microsoft Excel or LibreOffice Calc setting the tabs as delimiters.
+
 The first file (outfile.txt) is a tab-delimited file in which each row corresponds to a test (except for the first row, which is a header that contains column names).  The columns will vary depending upon which D-test was calculated.  For example, in the four taxon test (option -d) the first 4 columns correspond to sample names, columns 5 and 6 show the number of loci corresponding to ABBA and BABA patterns, column 7 provides the D score, 8 = standard deviation, 9 = chi-square test statistic value, 10 = chi-square p-value, 11 = Z-score test statistic value, and 12 = Z-score p-value.  Output files for Partitioned-D and D-foil tests are similar in format, but will contain several more columns corresponding to the additional site patterns and statistics that must be calculated for these tests.
 
 As you may have already noticed, two methods are offered for assessing significance of an individual test.  Bootstrapping is necessary to calculate the standard deviation that is used to compute the Z-score (this same method is used for calculations in the pyRAD pipeline).  If you wish to avoid relying upon this method to assess statistical significance, then a chi-square test is offered as an alternative.  This option is modeled after the method Pease and Hahn 2015 use to determine significance for the D-foil test.  In practice, I find the chi-square test to more often (but not always) be a more conservative approach to assessing significance for these tests (i.e., less likely to show statistical significance).
