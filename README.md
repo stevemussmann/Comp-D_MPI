@@ -60,13 +60,22 @@ For each of the D test options, the program can handle heterozygous loci in one 
 
 ### Optional commands:
 * **-o / --outfile** Specify the name of the output file that contains test results (default = "outfile.txt")
+* **-Z / --popstats** Specify the name of the output file that will contain population summary Z-scores (default = "popZscores.txt")
 
 ## Running the program - Example:
-
 Imagine that you have a Phylip-formatted genotype file named "genotypes.phy" and a taxa file named "taxa.txt" which contains the taxa listed in the input file example listed above.  The file contains 14,000 SNPs, and you want to perform the four-taxon D-statistic test using the SNP frequency formulas to handle heterozygotes.  You also want to conduct 1000 bootstrap replicates for assessing significance of each test, and have 4 processor cores available to you for parallelization of the bootstrap procedure.  These options can be implemented with the following command:
 ```
 mpirun -np 4 compDmpi -i genotypes.phy -t taxa.txt -b 1000 -l 14000 -PdH
 ```
+
+## Outputs
+The program writes two output files.  If you have not instructed the program to use special names for these files using the -o and -Z options, then they will be named "outfile.txt" and "popZscores.txt" respectively.
+
+The first file (outfile.txt) is a tab-delimited file in which each row corresponds to a test (except for the first row, which is a header that contains column names).  The columns will vary depending upon which D-test was calculated.  For example, in the four taxon test (option -d) the first 4 columns correspond to sample names, columns 5 and 6 show the number of loci corresponding to ABBA and BABA patterns, column 7 provides the D score, 8 = standard deviation, 9 = chi-square test statistic value, 10 = chi-square p-value, 11 = Z-score test statistic value, and 12 = Z-score p-value.  Output files for Partitioned-D and D-foil tests are similar in format, but will contain several more columns corresponding to the additional site patterns and statistics that must be calculated for these tests.
+
+As you may have already noticed, two methods are offered for assessing significance of an individual test.  Bootstrapping is necessary to calculate the standard deviation that is used to compute the Z-score (this same method is used for calculations in the pyRAD pipeline).  If you wish to avoid relying upon this method to assess statistical significance, then a chi-square test is offered as an alternative.  This option is modeled after the method Pease and Hahn 2015 use to determine significance for the D-foil test.  In practice, I find the chi-square test to more often (but not always) be a more conservative approach to assessing significance for these tests (i.e., less likely to show statistical significance).
+
+The second file (popZscores.txt) offers a test of significance across all tests performed for a single run of compD.  This allows you to test whether a population shows significant evidence of introgression.  This computes a Z-score using the results of all tests calculated during a single run of the program, so it avoids performing the bootstrapping procedure that is necessary for the Z-score calculations you find in the outfile.txt file.  **Important: In order for this option to produce a meaningful result, you must input samples for the taxa of interest that represent members of the same populations.**
 
 ## Legacy Code
 I originally wrote the program with the intention of using the whole sequence of a RAD locus for consideration when comparing alleles.  However, I found this often produced messy results as well as increasing computation time and memory usage.  Therefore, I consider the remaining options to be "deprecated" and generally advise against their use.  However, this functionality is still included in the program if you want to experiment with these options.  
