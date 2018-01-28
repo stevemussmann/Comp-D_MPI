@@ -77,6 +77,9 @@ Dfoil::Dfoil() {
 	XpvalDIL = 0.0;
 	XpvalDFI = 0.0;
 	XpvalDOL = 0.0;
+
+	numloci=0;	
+
 }
 
 Dfoil::Dfoil(const Dfoil& orig) {
@@ -311,6 +314,8 @@ void Dfoil::calcStats(unsigned int length)
 	calcDIL();
 	calcDOL();
 
+	numloci = length;
+
 	std::cout << "Found " << length << " biallelic loci" << std::endl;
 	std::cout << "AAABA = " << patterns["AAABA"] << std::endl;
 	std::cout << "AABAA = " << patterns["AABAA"] << std::endl;
@@ -336,6 +341,8 @@ void Dfoil::polyCalcStats(unsigned int length)
 	polyCalcDFO();
 	polyCalcDIL();
 	polyCalcDOL();
+
+	numloci = length;
 
 	std::cout << "Found " << length << " biallelic loci" << std::endl;
 	std::cout << "AAABA = " << polyPatterns["AAABA"] << std::endl;
@@ -542,6 +549,7 @@ void Dfoil::write(std::string *array, std::ofstream &outfile, int i, bool hetIgn
                     << "BABBA" << "\t"
                     << "BBABA" << "\t"
                     << "BBBAA" << "\t"
+		    << "nloci" << "\t"
                     << "DFO" << "\t" 
                     << "DIL" << "\t" 
                     << "DFI" << "\t"     
@@ -609,7 +617,7 @@ void Dfoil::write(std::string *array, std::ofstream &outfile, int i, bool hetIgn
 		exit(EXIT_FAILURE);
 	}
         
-      
+      	outfile << numloci << "\t";
         outfile << std::fixed << std::setprecision(4) << DFO << "\t";
         outfile << std::fixed << std::setprecision(4) << DIL << "\t";
         outfile << std::fixed << std::setprecision(4) << DFI << "\t";
