@@ -81,6 +81,7 @@ private:
     double XpvalD1;
     double XpvalD2;
     double XpvalD12;
+    unsigned int numloci;
     std::unordered_map <std::string,int> patterns;
     std::unordered_map<std::string,double> polyPatterns;
     void bootproc(int bootstrap, std::vector<int> &keep, double *bootD1, double *bootD2, double *bootD12, 

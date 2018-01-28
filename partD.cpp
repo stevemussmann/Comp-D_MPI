@@ -60,6 +60,8 @@ partD::partD()
     XpvalD1 = 0.0;
     XpvalD2 = 0.0;
     XpvalD12 = 0.0;
+
+    numloci=0;
 }
 
 partD::partD(const partD& orig) {
@@ -247,6 +249,8 @@ void partD::calcStats(unsigned int length)
     calcD1();
     calcD2();
     calcD12();
+
+    numloci = length;
     
     std::cout << "Found " << length << " biallelic loci" << std::endl;
     std::cout << "ABBBA = " << patterns["ABBBA"] << std::endl;
@@ -265,6 +269,8 @@ void partD::polyCalcStats(unsigned int length)
     polyCalcD1();
     polyCalcD2();
     polyCalcD12();
+
+    numloci = length;
     
     std::cout << "Found " << length << " biallelic loci" << std::endl;
     std::cout << "ABBBA = " << polyPatterns["ABBBA"] << std::endl;
@@ -462,6 +468,7 @@ void partD::write(std::string *array, std::ofstream &outfile, int i, bool hetIgn
             << "BABAA" << "\t"
             << "ABABA" << "\t"
             << "BAABA" << "\t"
+	    << "nloci" << "\t"
             << "D1" << "\t"
             << "D2" << "\t"
             << "D12" << "\t"
@@ -510,6 +517,8 @@ void partD::write(std::string *array, std::ofstream &outfile, int i, bool hetIgn
 		std::cerr << "This code should not be reachable." << std::endl;
 		exit(EXIT_FAILURE);
 	}
+
+	outfile << numloci << "\t";
 
         outfile << std::fixed << std::setprecision(4) << D1 << "\t";
         outfile << std::fixed << std::setprecision(4) << D2 << "\t";
