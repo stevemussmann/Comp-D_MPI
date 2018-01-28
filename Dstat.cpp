@@ -34,6 +34,7 @@ Dstat::Dstat()
     Z=0.0;
     Zpval=0.0;
     Xpval=0.0;
+    numloci=0;
 }
 
 void Dstat::calcStats(unsigned int length)
@@ -46,6 +47,8 @@ void Dstat::calcStats(unsigned int length)
     {
         D = (double)(ABBA - BABA) / (double)(ABBA + BABA);
     }
+
+    numloci = length;
     
     std::cout << "Found " << length << " biallelic loci" << std::endl;
     std::cout << "ABBA = " << ABBA << std::endl;
@@ -62,6 +65,8 @@ void Dstat::polyCalcStats(unsigned int length)
 	{
 		D = (polyABBA - polyBABA) / (polyABBA + polyBABA);
 	}
+
+	numloci = length;
 	
 	std::cout << "Found " << length << " biallelic loci" << std::endl;
 	std::cout << "ABBA = " << polyABBA << std::endl;
@@ -253,7 +258,7 @@ void Dstat::write(std::string *array, std::ofstream &outfile, int i, bool hetIgn
         if(i==0)
         {
             outfile << "O" << "\t" << "P3" << "\t" << "P2" << "\t" << "P1" << "\t" << "ABBA" << 
-                "\t" << "BABA" << "\t" << "D" << "\t" << "STDEV" << "\t" << "X^2" << "\t" <<
+                "\t" << "BABA" << "\t" "nloci" << "\t" << "D" << "\t" << "STDEV" << "\t" << "X^2" << "\t" <<
                 "X^2_pval" << "\t" << "Z-score" << "\t" << "Z pval" << std::endl;
         }
         
@@ -278,6 +283,7 @@ void Dstat::write(std::string *array, std::ofstream &outfile, int i, bool hetIgn
 		exit(EXIT_FAILURE);
 	}
         
+	outfile << numloci << "\t";
         outfile << std::fixed << std::setprecision(4) << D << "\t";
         outfile << std::fixed << std::setprecision(4) << sd << "\t";
         outfile << std::fixed << std::setprecision(4) << chisq << "\t";

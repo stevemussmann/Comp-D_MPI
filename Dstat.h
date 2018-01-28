@@ -54,6 +54,7 @@ private:
 	double D;
 	int ABBA;
 	int BABA;
+	unsigned int numloci;
 	double polyABBA;
 	double polyBABA;
 	double chisq;
