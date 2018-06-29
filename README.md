@@ -84,6 +84,10 @@ As you may have already noticed, two methods are offered for assessing significa
 
 The second file (popZscores.txt) offers a test of significance across all tests performed for a single run of compD.  This allows you to test whether a population shows significant evidence of introgression.  This computes a Z-score using the results of all tests calculated during a single run of the program, so it avoids performing the bootstrapping procedure that is necessary for the Z-score calculations you find in the outfile.txt file.  **Important: In order for this option to produce a meaningful result, you must input samples for the taxa of interest that represent members of the same populations.**
 
+## List of bug fixes, additions, and other changes:
+2018-06-28:
+* Major bug fix - p-values associated with Z-scores are now correct.  If you were relying upon the Z-scores for determining statistical significance, then you should re-run any analyses done prior to this date.  Under certain conditions the Z-score was being converted from a double to integer prior to calculation of the p-value, leading to incorrect p-values.  The p-values associated with the Chi-squared test were unaffected by this bug.
+
 ## Legacy Code
 I originally wrote the program with the intention of using the whole sequence of a RAD locus for consideration when comparing alleles.  However, I found this often produced messy results as well as increasing computation time and memory usage.  Therefore, I consider the remaining options to be "deprecated" and generally advise against their use.  However, this functionality is still included in the program if you want to experiment with these options.  
 
