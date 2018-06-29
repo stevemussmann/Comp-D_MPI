@@ -359,9 +359,9 @@ void partD::bootstrap(int mpiboot, int bootstrap, std::unordered_map <std::strin
         //calculate p-values for Z scores
 
         boost::math::normal_distribution<> zdist(0.0, 1.0);
-        ZD1pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD1)));
-        ZD2pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD2)));
-        ZD12pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD12)));
+        ZD1pval = 2.0*(1-boost::math::cdf(zdist, fabs(ZD1)));
+        ZD2pval = 2.0*(1-boost::math::cdf(zdist, fabs(ZD2)));
+        ZD12pval = 2.0*(1-boost::math::cdf(zdist, fabs(ZD12)));
 
         //calculate chi squared values
 	if(hetIgnore==true || (hetIgnore==false && hetInclude==false))

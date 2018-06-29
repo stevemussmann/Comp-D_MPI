@@ -432,10 +432,10 @@ void Dfoil::bootstrap(int mpiboot, int bootstrap, std::unordered_map <std::strin
 
 		//calculate p-values for Z scores
 		boost::math::normal_distribution<> zdist(0.0, 1.0);
-		ZDFOpval = 2.0*(1-boost::math::cdf(zdist, abs(ZDFO)));
-		ZDILpval = 2.0*(1-boost::math::cdf(zdist, abs(ZDIL)));
-		ZDFIpval = 2.0*(1-boost::math::cdf(zdist, abs(ZDFI)));
-		ZDOLpval = 2.0*(1-boost::math::cdf(zdist, abs(ZDOL)));
+		ZDFOpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZDFO)));
+		ZDILpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZDIL)));
+		ZDFIpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZDFI)));
+		ZDOLpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZDOL)));
 
 		//calculate chi squared values
 		if(hetIgnore==true || (hetIgnore==false && hetInclude==false))

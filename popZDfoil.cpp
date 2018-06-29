@@ -50,10 +50,10 @@ void popZDfoil::dfoilZ(std::string filename){
 
 	//calculate p-values for Z scores
 	boost::math::normal_distribution<> zdist(0.0, 1.0);
-	double ZDFOpval = 2.0*(1-boost::math::cdf(zdist, abs(ZDFO)));
-	double ZDILpval = 2.0*(1-boost::math::cdf(zdist, abs(ZDIL)));
-	double ZDFIpval = 2.0*(1-boost::math::cdf(zdist, abs(ZDFI)));
-	double ZDOLpval = 2.0*(1-boost::math::cdf(zdist, abs(ZDOL)));
+	double ZDFOpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZDFO)));
+	double ZDILpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZDIL)));
+	double ZDFIpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZDFI)));
+	double ZDOLpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZDOL)));
    
 	std::ofstream popout;
 	popout.open(filename, std::ios::out);

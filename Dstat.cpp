@@ -191,7 +191,7 @@ void Dstat::bootstrap(int mpiboot, int bootstrap, std::unordered_map <std::strin
         Z = this->calcZ(D, sd);
 
         boost::math::normal_distribution<> zdist(0.0, 1.0);
-        Zpval = 2.0*(1-boost::math::cdf(zdist, abs(Z)));
+        Zpval = 2.0*(1-boost::math::cdf(zdist, fabs(Z)));
     
         //calculate chi squared and pval
 	if(hetIgnore==true || (hetIgnore==false && hetInclude==false))

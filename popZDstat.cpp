@@ -31,7 +31,7 @@ void popZDstat::dstatZ(std::string filename){
 	double ZD = this->calcZ(avgD, sdD);
 	
 	boost::math::normal_distribution<> zdist(0.0, 1.0);
-	double ZDpval = 2.0*(1-boost::math::cdf(zdist, abs(ZD)));
+	double ZDpval = 2.0*(1-boost::math::cdf(zdist, fabs(ZD)));
 	
 	std::ofstream popout;
 	popout.open(filename, std::ios::out);

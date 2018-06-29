@@ -45,9 +45,9 @@ void popZpartD::partdZ(std::string filename){
 	
 	//calculate p-values for Z scores
 	boost::math::normal_distribution<> zdist(0.0, 1.0);
-	double ZD1pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD1)));
-	double ZD2pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD2)));
-	double ZD12pval = 2.0*(1-boost::math::cdf(zdist, abs(ZD12)));
+	double ZD1pval = 2.0*(1-boost::math::cdf(zdist, fabs(ZD1)));
+	double ZD2pval = 2.0*(1-boost::math::cdf(zdist, fabs(ZD2)));
+	double ZD12pval = 2.0*(1-boost::math::cdf(zdist, fabs(ZD12)));
 
 	std::ofstream popout;
 	popout.open(filename, std::ios::out);
