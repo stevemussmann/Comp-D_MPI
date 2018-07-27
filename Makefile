@@ -40,16 +40,17 @@ compDmpi : fourtax.o locusfile.o Stats.o DstatParent.o Dstat.o partD.o Dfoil.o p
 	mpic++ -O3 -std=c++11 -Wall -o compDmpi fourtax.o locusfile.o Stats.o DstatParent.o Dstat.o partD.o Dfoil.o popZParent.o popZDstat.o popZpartD.o popZDfoil.o dstat_main.o -lboost_program_options -lpthread
 
 fnFiles.o : fnFiles.h fnFiles.cpp
-	g++ -O2 -std=c++11 -Wall -c fnFiles.cpp
+	g++ -O3 -std=c++11 -Wall -c fnFiles.cpp
 
 fn_main.o : fn_main.cpp fnFiles.h
-	g++ -O2 -std=c++11 -Wall -c fn_main.cpp
+	g++ -O3 -std=c++11 -Wall -c fn_main.cpp
 
 fn : fnFiles.o fn_main.o
-	g++ -O2 -std=c++11 -Wall -o fn fnFiles.o fn_main.o -lboost_program_options
+	g++ -O3 -std=c++11 -Wall -o fn fnFiles.o fn_main.o -lboost_program_options -static
 
 clean:
-	rm *.o compDmpi
+	rm *.o compDmpi fn
 
 install:
 	cp compDmpi /usr/local/bin/.
+	cp fn /usr/local/bin/.
