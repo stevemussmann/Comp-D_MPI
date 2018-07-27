@@ -87,6 +87,7 @@ The second file (popZscores.txt) offers a test of significance across all tests 
 ## List of bug fixes, additions, and other changes:
 2018-07-27:
 * Began adding accessory program to calculate F2, F3, and F4 statistics.  Program (fn) compiles but is not yet functional.  User guide will be forthcoming.
+
 2018-06-28:
 * Major bug fix - p-values associated with Z-scores are now correct.  If you were relying upon the Z-scores for determining statistical significance, then you should re-run any analyses done prior to this date.  Under certain conditions the Z-score was being converted from a double to integer prior to calculation of the p-value, leading to incorrect p-values.  The p-values associated with the Chi-squared test were unaffected by this bug.
 
