@@ -9,6 +9,7 @@ class fnFiles {
 	public:
 		fnFiles(std::string i, std::string p, std::string o, std::string a, int vectorsize);
 		void readfiles();
+		int getLength();
 	private:
 		std::string infile;
 		std::string popfile;

@@ -10,7 +10,8 @@
 #include <unordered_map>
 #include <vector>
 
-fnFiles::fnFiles(std::string i, std::string p, std::string o, std::string abcd, int vectorsize){
+fnFiles::fnFiles(std::string i, std::string p, std::string o, std::string abcd, int vectorsize)
+{
 	infile = i;
 	popfile = p;
 	ABCDfile = abcd;
@@ -20,6 +21,19 @@ fnFiles::fnFiles(std::string i, std::string p, std::string o, std::string abcd, 
 	C.resize(vectorsize);
 	D.resize(vectorsize);
 
+}
+
+int fnFiles::getLength()
+{
+	if(A.size() == B.size() == C.size() == D.size())
+	{
+		return A.size();
+	}
+	else
+	{
+		std::cerr << "Vectors holding data for taxa A,B,C, and D are different lengths." << std::endl;
+		exit(EXIT_FAILURE);
+	}
 }
 
 void fnFiles::readfiles()

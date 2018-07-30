@@ -1,6 +1,7 @@
 #include <boost/program_options.hpp> //handling of command line options
 
 #include "fnFiles.h"
+#include "fnStats.h"
 
 #include <iostream>
 #include <string>
@@ -19,7 +20,7 @@ int main(int argc, char** argv) {
 
 	parseComLine(argc,argv,infile,popmap,outgroup,abcd,vsize);
 
-	std::cout << "Hello World!" << std::endl;
+	//std::cout << "Hello World!" << std::endl;
 
 	fnFiles f(infile, popmap, outgroup, abcd, vsize);
 	f.readfiles();
