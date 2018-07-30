@@ -5,7 +5,7 @@
 //#include <cstdlib>
 //#include <fstream>
 #include <iostream>
-//#include <iterator>
+#include <iterator>
 //#include <sstream>
 #include <string>
 #include <unordered_map>
@@ -30,10 +30,32 @@ void fnStats::calcAllFreqs()
 
 void fnStats::findAncestral(fnFiles &f)
 {
-	for(int i=0; i<ancestral.size(); i++)
+	for(unsigned int i=0; i<ancestral.size(); i++)
 	{
-		std::unordered_map <std::string,int> l = f.getOutgroupLocus(i);
-		std::cout << l.size() << std::endl;
+		std::unordered_map<std::string,int> l = f.getOutgroupLocus(i); //get locus for outgroup
+
+		std::unordered_map<std::string,int>::iterator it = l.begin(); //start iterator
+		if(l.size() == 1)
+		{
+			ancestral[i] = it->first; //if only one allele, set it as ancestral state.
+		}
+		else
+		{
+			std::string anc;
+			int ancCount = 0;
+			while(it != l.end())
+			{
+				if(it->second > ancCount){
+					ancCount = it->second;
+					anc = it->first;
+				}
+				it++;
+			}
+			ancestral[i] = anc;
+		}
+		
+		std::cout << ancestral[i] << std::endl;
+		//std::cout << l.size() << std::endl;
 	}
 }
 
