@@ -3,8 +3,10 @@
 //#include <algorithm>
 //#include <cstdlib>
 #include <fstream>
+#include <functional> //for reverse order of keys in map
 #include <iostream>
 #include <iterator>
+#include <map>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -42,6 +44,7 @@ void fnFiles::readfiles()
 	readABCDfile();
 	readPopfile();
 	readPhylip();
+	blacklist();
 }
 
 void fnFiles::readPhylip()
@@ -234,4 +237,46 @@ std::string fnFiles::iupac(std::string ambig)
 	map["K"] = "GT";
 
 	return map[ambig];
+}
+
+void fnFiles::blacklist()
+{
+	std::map<int,int, std::greater<int> > bl;
+
+	for(int i=0; i<A.size(); i++)
+	{
+		//std::cout << A[i].size() << std::endl;
+		if(A[i].size() < 1 || A[i].size() > 2)
+		{
+			bl[i]++;
+		}
+		if(B[i].size() < 1 || B[i].size() > 2)
+		{
+			bl[i]++;
+		}
+		if(C[i].size() < 1 || C[i].size() > 2)
+		{
+			bl[i]++;
+		}
+		if(D[i].size() < 1 || D[i].size() > 2)
+		{
+			bl[i]++;
+		}
+	}
+
+	std::map<int,int>::iterator it = bl.begin();
+
+	while(it != bl.end())
+	{
+		A.erase(A.begin()+it->first);
+		B.erase(B.begin()+it->first);
+		C.erase(C.begin()+it->first);
+		D.erase(D.begin()+it->first);
+		//std::cout << it->first << std::endl;
+		it++;
+	}
+	//std::cout << A.size() << std::endl;
+	//std::cout << B.size() << std::endl;
+	//std::cout << C.size() << std::endl;
+	//std::cout << D.size() << std::endl;
 }

@@ -18,6 +18,7 @@ class fnFiles {
 		void readPhylip();
 		void readPopfile();
 		void readABCDfile();
+		void blacklist();
 		std::unordered_map <std::string,std::string> popmap;
 		std::unordered_map <std::string,std::string> ABCDmap;
 		std::vector<std::unordered_map <std::string,int> > A;
