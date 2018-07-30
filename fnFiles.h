@@ -11,6 +11,9 @@ class fnFiles {
 		void readfiles();
 		int getLength();
 		std::unordered_map <std::string,int> getOutgroupLocus(int i);
+		std::unordered_map <std::string,int> getALocus(int i);
+		std::unordered_map <std::string,int> getBLocus(int i);
+		std::unordered_map <std::string,int> getCLocus(int i);
 	private:
 		std::string infile;
 		std::string popfile;

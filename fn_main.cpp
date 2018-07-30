@@ -27,6 +27,7 @@ int main(int argc, char** argv) {
 
 	fnStats fs(f.getLength());
 	fs.findAncestral(f);
+	fs.calcAllFreqs(f);
 
 	return 0;
 }

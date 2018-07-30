@@ -30,6 +30,21 @@ std::unordered_map <std::string,int> fnFiles::getOutgroupLocus(int i)
 	return D[i];
 }
 
+std::unordered_map <std::string,int> fnFiles::getALocus(int i)
+{
+	return A[i];
+}
+
+std::unordered_map <std::string,int> fnFiles::getBLocus(int i)
+{
+	return B[i];
+}
+
+std::unordered_map <std::string,int> fnFiles::getCLocus(int i)
+{
+	return C[i];
+}
+
 int fnFiles::getLength()
 {
 	if(A.size() == B.size() && B.size() == C.size() && C.size() == D.size())

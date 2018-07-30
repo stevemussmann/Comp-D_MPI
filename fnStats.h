@@ -12,17 +12,20 @@
 class fnStats {
 	public:
 		fnStats(int l);
-		void calcAllFreqs();
+		void calcAllFreqs(fnFiles &f);
 		void findAncestral(fnFiles &f);
 	private:
 		//record alleles as anc (ancestral) and derived (der)
-		std::vector<std::unordered_map <std::string,int> > Afreqs;
-		std::vector<std::unordered_map <std::string,int> > Bfreqs;
-		std::vector<std::unordered_map <std::string,int> > Cfreqs;
-		std::vector<std::unordered_map <std::string,int> > Dfreqs;
+		std::vector<std::unordered_map <std::string,double> > Afreqs;
+		std::vector<std::unordered_map <std::string,double> > Bfreqs;
+		std::vector<std::unordered_map <std::string,double> > Cfreqs;
+		std::vector<std::unordered_map <std::string,double> > Dfreqs;
 		std::vector<std::string> ancestral;
 		std::unordered_map<int,int> blacklist;
-		void calcFreqs(std::vector<std::unordered_map <std::string,int> > &vec);
+		void calcAFreqs(fnFiles &f);
+		void calcBFreqs(fnFiles &f);
+		void calcCFreqs(fnFiles &f);
+		void calcDFreqs(fnFiles &f);
 };
 
 #endif
