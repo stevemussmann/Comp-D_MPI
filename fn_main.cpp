@@ -25,6 +25,9 @@ int main(int argc, char** argv) {
 	fnFiles f(infile, popmap, outgroup, abcd, vsize);
 	f.readfiles();
 
+	fnStats fs(f.getLength());
+	fs.findAncestral(f);
+
 	return 0;
 }
 

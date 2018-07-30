@@ -25,9 +25,14 @@ fnFiles::fnFiles(std::string i, std::string p, std::string o, std::string abcd, 
 
 }
 
+std::unordered_map <std::string,int> fnFiles::getOutgroupLocus(int i)
+{
+	return D[i];
+}
+
 int fnFiles::getLength()
 {
-	if(A.size() == B.size() == C.size() == D.size())
+	if(A.size() == B.size() && B.size() == C.size() && C.size() == D.size())
 	{
 		return A.size();
 	}
@@ -241,11 +246,13 @@ std::string fnFiles::iupac(std::string ambig)
 
 void fnFiles::blacklist()
 {
-	std::map<int,int, std::greater<int> > bl;
+	std::map<int,int, std::greater<int> > bl; //list of blacklisted loci
 
-	for(int i=0; i<A.size(); i++)
+	for(unsigned int i=0; i<A.size(); i++)
 	{
 		//std::cout << A[i].size() << std::endl;
+
+		// all loci with > 2 alleles or missing data in at least one population are blacklisted
 		if(A[i].size() < 1 || A[i].size() > 2)
 		{
 			bl[i]++;
@@ -266,6 +273,8 @@ void fnFiles::blacklist()
 
 	std::map<int,int>::iterator it = bl.begin();
 
+
+	//remove loci from vectors
 	while(it != bl.end())
 	{
 		A.erase(A.begin()+it->first);
