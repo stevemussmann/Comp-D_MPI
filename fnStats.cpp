@@ -4,6 +4,7 @@
 //#include <algorithm>
 //#include <cstdlib>
 //#include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <iterator>
 //#include <sstream>
@@ -101,9 +102,9 @@ void fnStats::calcAFreqs(fnFiles &f)
 			}
 			it++;
 		}
-		std::cout << i << std::endl;
-		std::cout << "anc = " << Afreqs[i]["anc"] << std::endl;
-		std::cout << "der = " << Afreqs[i]["der"] << std::endl;
+		//std::cout << i << std::endl;
+		//std::cout << "anc = " << Afreqs[i]["anc"] << std::endl;
+		//std::cout << "der = " << Afreqs[i]["der"] << std::endl;
 	}
 }
 
@@ -149,9 +150,9 @@ void fnStats::calcBFreqs(fnFiles &f)
 			}
 			it++;
 		}
-		std::cout << i << std::endl;
-		std::cout << "anc = " << Bfreqs[i]["anc"] << std::endl;
-		std::cout << "der = " << Bfreqs[i]["der"] << std::endl;
+		//std::cout << i << std::endl;
+		//std::cout << "anc = " << Bfreqs[i]["anc"] << std::endl;
+		//std::cout << "der = " << Bfreqs[i]["der"] << std::endl;
 	}
 }
 
@@ -197,9 +198,9 @@ void fnStats::calcCFreqs(fnFiles &f)
 			}
 			it++;
 		}
-		std::cout << i << std::endl;
-		std::cout << "anc = " << Cfreqs[i]["anc"] << std::endl;
-		std::cout << "der = " << Cfreqs[i]["der"] << std::endl;
+		//std::cout << i << std::endl;
+		//std::cout << "anc = " << Cfreqs[i]["anc"] << std::endl;
+		//std::cout << "der = " << Cfreqs[i]["der"] << std::endl;
 	}
 }
 
@@ -245,8 +246,139 @@ void fnStats::calcDFreqs(fnFiles &f)
 			}
 			it++;
 		}
-		std::cout << i << std::endl;
-		std::cout << "anc = " << Dfreqs[i]["anc"] << std::endl;
-		std::cout << "der = " << Dfreqs[i]["der"] << std::endl;
+		//std::cout << i << std::endl;
+		//std::cout << "anc = " << Dfreqs[i]["anc"] << std::endl;
+		//std::cout << "der = " << Dfreqs[i]["der"] << std::endl;
+	}
+}
+
+void fnStats::calcFstats(fnFiles &f)
+{
+	for(unsigned int i=0; i<ancestral.size(); i++)
+	{
+		//get locus counts	
+		std::unordered_map<std::string,int> al = f.getALocus(i);
+		std::unordered_map<std::string,int> bl = f.getBLocus(i);
+		std::unordered_map<std::string,int> cl = f.getCLocus(i);
+		std::unordered_map<std::string,int> dl = f.getOutgroupLocus(i);
+
+		//initialize iterators
+		std::unordered_map<std::string,int>::iterator ait = al.begin();
+		std::unordered_map<std::string,int>::iterator bit = bl.begin();
+		std::unordered_map<std::string,int>::iterator cit = cl.begin();
+		std::unordered_map<std::string,int>::iterator dit = dl.begin();
+
+		std::vector<int> avec;
+		std::vector<int> bvec;
+		std::vector<int> cvec;
+		std::vector<int> dvec;
+
+		int atotal=0;
+		while(ait != al.end())
+		{
+			atotal += ait->second;
+			avec.push_back(ait->second);
+			ait++;
+		}
+
+		int btotal=0;
+		while(bit != bl.end())
+		{
+			btotal += bit->second;
+			bvec.push_back(bit->second);
+			bit++;
+		}
+
+		int ctotal=0;
+		while(cit != cl.end())
+		{
+			ctotal += cit->second;
+			cvec.push_back(cit->second);
+			cit++;
+		}
+
+		int dtotal=0;
+		while(dit != dl.end())
+		{
+			dtotal += dit->second;
+			dvec.push_back(dit->second);
+			dit++;
+		}
+
+		double ahz = hz(avec, atotal);
+		double bhz = hz(bvec, btotal);
+		double chz = hz(cvec, ctotal);
+		double dhz = hz(dvec, dtotal);
+
+		double f2i = f2(Afreqs[i]["anc"], Bfreqs[i]["anc"], ahz, bhz, atotal, btotal);
+		double f3i = f3(Afreqs[i]["anc"], Bfreqs[i]["anc"], Cfreqs[i]["anc"], chz, ctotal);
+		double f4i = f4(Afreqs[i]["anc"], Bfreqs[i]["anc"], Cfreqs[i]["anc"], Dfreqs[i]["anc"]);
+		double fsti = fst(Afreqs[i]["der"], Bfreqs[i]["der"]);
+
+		//std::cout << std::fixed;
+		std::cout << "len(a) = " << avec.size() << std::endl;
+		std::cout << "len(b) = " << bvec.size() << std::endl;
+		std::cout << "len(c) = " << cvec.size() << std::endl;
+		std::cout << "ahz = " << ahz << std::endl;
+		std::cout << "bhz = " << bhz << std::endl;
+		std::cout << "chz = " << chz << std::endl;
+		std::cout << "f2 = " << f2i << std::endl;
+		std::cout << "f3 = " << f3i << std::endl;
+		//std::cout << std::setprecision(10) << "f4 = " << f4i << std::endl;
+		std::cout << "f4 = " << f4i << std::endl;
+		std::cout << "fst = " << fsti << std::endl;
+		std::cout << std::endl;
+		
+	}
+}
+
+double fnStats::hz(std::vector<int> &v, int t)
+{
+	if(v.size() == 1){
+		return 0.0;
+	}
+	else
+	{
+		return ((double)v[0]*(double)v[1])/((double)t*((double)t-1.0));
+	}
+}
+
+
+double fnStats::f2(double freqa, double freqb, double ha, double hb, int tota, int totb)
+{
+	double x = freqa-freqb;
+	return (x*x)-(ha/(double)tota)-(hb/(double)totb);
+}
+
+double fnStats::f3(double freqa, double freqb, double freqc, double hc, int totc)
+{
+	double x = freqc-freqa;
+	double y = freqc-freqb;
+	double xy = (x*y);
+	return xy-(hc/(double)totc);
+}
+
+double fnStats::f4(double freqa, double freqb, double freqc, double freqd)
+{
+	double x = freqa-freqb;
+	double y = freqc-freqd;
+	return x*y;
+}
+
+double fnStats::fst(double freqa, double freqb)
+{
+	double n = (freqa-freqb);
+	n = n*n;
+	double b = 1.0-freqb;
+	double a = 1.0-freqa;
+	b = freqa*b;
+	a = freqb*a;
+	if(a+b == 0)
+	{
+		return 0.0;
+	}
+	else
+	{
+		return n/(a+b);
 	}
 }
