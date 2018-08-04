@@ -7,7 +7,8 @@
 
 class fnFiles {
 	public:
-		fnFiles(std::string i, std::string p, std::string o, std::string a, int vectorsize);
+		//fnFiles(std::string i, std::string p, std::string o, std::string a, int vectorsize);
+		fnFiles(std::string i, std::string p, std::string a, int vectorsize);
 		void readfiles();
 		int getLength();
 		std::unordered_map <std::string,int> getOutgroupLocus(int i);
@@ -23,6 +24,7 @@ class fnFiles {
 		void readPopfile();
 		void readABCDfile();
 		void blacklist();
+		std::unordered_map<std::string,std::vector<std::unordered_map<std::string,int > > > data;
 		std::unordered_map <std::string,std::string> popmap;
 		std::unordered_map <std::string,std::string> ABCDmap;
 		std::vector<std::unordered_map <std::string,int> > A;

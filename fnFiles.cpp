@@ -12,12 +12,18 @@
 #include <unordered_map>
 #include <vector>
 
-fnFiles::fnFiles(std::string i, std::string p, std::string o, std::string abcd, int vectorsize)
+//fnFiles::fnFiles(std::string i, std::string p, std::string o, std::string abcd, int vectorsize)
+fnFiles::fnFiles(std::string i, std::string p, std::string abcd, int vectorsize)
 {
 	infile = i;
 	popfile = p;
 	ABCDfile = abcd;
-	outgroup = o;
+	readABCDfile(); //must read ABCDfile in the constructor to get taxa invovled
+	for(std::unordered_map<std::string,std::string>::iterator it = popmap.begin(); it != popmap.end(); it++)
+	{
+		std::cout << it->second << std::endl;
+	}
+	//outgroup = o;
 	A.resize(vectorsize);
 	B.resize(vectorsize);
 	C.resize(vectorsize);
@@ -61,7 +67,6 @@ int fnFiles::getLength()
 void fnFiles::readfiles()
 {
 	std::cout << "Reading files" << std::endl;
-	readABCDfile();
 	readPopfile();
 	readPhylip();
 	blacklist();
