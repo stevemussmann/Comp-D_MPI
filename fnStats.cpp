@@ -12,21 +12,64 @@
 #include <unordered_map>
 #include <vector>
 
-fnStats::fnStats(int l)
+fnStats::fnStats(int l, std::unordered_map<std::string,std::string> m)
 {
-	Afreqs.resize(l);
-	Bfreqs.resize(l);
-	Cfreqs.resize(l);
-	Dfreqs.resize(l);
+	for(std::unordered_map<std::string,std::string>::iterator it = m.begin(); it != m.end(); it++)
+	{
+		freqs[it->second].resize(l);
+	}
 	ancestral.resize(l);
 }
 
-void fnStats::calcAllFreqs(fnFiles &f)
+void fnStats::calcAllFreqs(fnFiles &f, std::unordered_map<std::string,std::string> m)
 {
-	calcAFreqs(f);
-	calcBFreqs(f);
-	calcCFreqs(f);
-	calcDFreqs(f);
+	for(unsigned int i=0; i<ancestral.size(); i++)
+	{
+		for(std::unordered_map<std::string,std::string>::iterator itt = m.begin(); itt!= m.end(); itt++)
+		{
+			int total = 0;
+			std::unordered_map<std::string,int> l = f.getLocus(itt->second,i);
+			std::unordered_map<std::string,int>::iterator it = l.begin();
+			while(it != l.end())
+			{
+				total += it->second;
+				it++;
+			}
+
+			it = l.begin();
+			while(it != l.end())
+			{
+				double freq = it->second/(double)total;
+				if(l.size() == 1){
+					if(it->first == ancestral[i])
+					{	
+						freqs[itt->second][i]["anc"] = freq;
+						freqs[itt->second][i]["der"] = 0.0;
+					}
+					else if(it->first != ancestral[i])
+					{
+						freqs[itt->second][i]["anc"] = 0.0;
+						freqs[itt->second][i]["der"] = freq;
+					}
+				}
+				else if(l.size() == 2)
+				{
+					if(it->first == ancestral[i])
+					{
+						freqs[itt->second][i]["anc"] = freq;
+					}
+					else
+					{
+						freqs[itt->second][i]["der"] = freq;
+					}
+				}
+				it++;
+			}
+			//std::cout << i << std::endl;
+			//std::cout << "anc = " << Afreqs[i]["anc"] << std::endl;
+			//std::cout << "der = " << Afreqs[i]["der"] << std::endl;
+		}
+	}
 }
 
 /*
@@ -34,7 +77,7 @@ void fnStats::findAncestral(fnFiles &f)
 {
 	for(unsigned int i=0; i<ancestral.size(); i++)
 	{
-		std::unordered_map<std::string,int> l = f.getOutgroupLocus(i); //get locus for outgroup
+		std::unordered_map<std::string,int> l = f.getDLocus(i); //get locus for outgroup
 
 		std::unordered_map<std::string,int>::iterator it = l.begin(); //start iterator
 		if(l.size() == 1)
@@ -66,201 +109,9 @@ void fnStats::findAncestral(fnFiles &f)
 {
 	for(unsigned int i=0; i<ancestral.size(); i++)
 	{
-		std::unordered_map<std::string,int> l = f.getDLocus(i); //get locus for outgroup
+		std::unordered_map<std::string,int> l = f.getALocus(i); //get locus for outgroup
 		std::unordered_map<std::string,int>::iterator it = l.begin(); //start iterator
 		ancestral[i] = it->first; //if only one allele, set it as ancestral state.
-	}
-}
-
-void fnStats::calcAFreqs(fnFiles &f)
-{
-	for(unsigned int i=0; i<Afreqs.size(); i++)
-	{
-		int total = 0;
-		std::unordered_map<std::string,int> l = f.getALocus(i);
-		std::unordered_map<std::string,int>::iterator it = l.begin();
-		while(it != l.end())
-		{
-			total += it->second;
-			it++;
-		}
-
-		it = l.begin();
-		while(it != l.end())
-		{
-			double freq = it->second/(double)total;
-			if(l.size() == 1){
-				if(it->first == ancestral[i])
-				{
-					Afreqs[i]["anc"] = freq;
-					Afreqs[i]["der"] = 0.0;
-				}
-				else if(it->first != ancestral[i])
-				{
-					Afreqs[i]["anc"] = 0.0;
-					Afreqs[i]["der"] = freq;
-				}
-			}
-			else if(l.size() == 2)
-			{
-				if(it->first == ancestral[i])
-				{
-					Afreqs[i]["anc"] = freq;
-				}
-				else
-				{
-					Afreqs[i]["der"] = freq;
-				}
-			}
-			it++;
-		}
-		//std::cout << i << std::endl;
-		//std::cout << "anc = " << Afreqs[i]["anc"] << std::endl;
-		//std::cout << "der = " << Afreqs[i]["der"] << std::endl;
-	}
-}
-
-void fnStats::calcBFreqs(fnFiles &f)
-{
-	for(unsigned int i=0; i<Bfreqs.size(); i++)
-	{
-		int total = 0;
-		std::unordered_map<std::string,int> l = f.getBLocus(i);
-		std::unordered_map<std::string,int>::iterator it = l.begin();
-		while(it != l.end())
-		{
-			total += it->second;
-			it++;
-		}
-
-		it = l.begin();
-		while(it != l.end())
-		{
-			double freq = it->second/(double)total;
-			if(l.size() == 1){
-				if(it->first == ancestral[i])
-				{
-					Bfreqs[i]["anc"] = freq;
-					Bfreqs[i]["der"] = 0.0;
-				}
-				else if(it->first != ancestral[i])
-				{
-					Bfreqs[i]["anc"] = 0.0;
-					Bfreqs[i]["der"] = freq;
-				}
-			}
-			else if(l.size() == 2)
-			{
-				if(it->first == ancestral[i])
-				{
-					Bfreqs[i]["anc"] = freq;
-				}
-				else
-				{
-					Bfreqs[i]["der"] = freq;
-				}
-			}
-			it++;
-		}
-		//std::cout << i << std::endl;
-		//std::cout << "anc = " << Bfreqs[i]["anc"] << std::endl;
-		//std::cout << "der = " << Bfreqs[i]["der"] << std::endl;
-	}
-}
-
-void fnStats::calcCFreqs(fnFiles &f)
-{
-	for(unsigned int i=0; i<Cfreqs.size(); i++)
-	{
-		int total = 0;
-		std::unordered_map<std::string,int> l = f.getCLocus(i);
-		std::unordered_map<std::string,int>::iterator it = l.begin();
-		while(it != l.end())
-		{
-			total += it->second;
-			it++;
-		}
-
-		it = l.begin();
-		while(it != l.end())
-		{
-			double freq = it->second/(double)total;
-			if(l.size() == 1){
-				if(it->first == ancestral[i])
-				{
-					Cfreqs[i]["anc"] = freq;
-					Cfreqs[i]["der"] = 0.0;
-				}
-				else if(it->first != ancestral[i])
-				{
-					Cfreqs[i]["anc"] = 0.0;
-					Cfreqs[i]["der"] = freq;
-				}
-			}
-			else if(l.size() == 2)
-			{
-				if(it->first == ancestral[i])
-				{
-					Cfreqs[i]["anc"] = freq;
-				}
-				else
-				{
-					Cfreqs[i]["der"] = freq;
-				}
-			}
-			it++;
-		}
-		//std::cout << i << std::endl;
-		//std::cout << "anc = " << Cfreqs[i]["anc"] << std::endl;
-		//std::cout << "der = " << Cfreqs[i]["der"] << std::endl;
-	}
-}
-
-void fnStats::calcDFreqs(fnFiles &f)
-{
-	for(unsigned int i=0; i<Dfreqs.size(); i++)
-	{
-		int total = 0;
-		std::unordered_map<std::string,int> l = f.getDLocus(i);
-		std::unordered_map<std::string,int>::iterator it = l.begin();
-		while(it != l.end())
-		{
-			total += it->second;
-			it++;
-		}
-
-		it = l.begin();
-		while(it != l.end())
-		{
-			double freq = it->second/(double)total;
-			if(l.size() == 1){
-				if(it->first == ancestral[i])
-				{
-					Dfreqs[i]["anc"] = freq;
-					Dfreqs[i]["der"] = 0.0;
-				}
-				else if(it->first != ancestral[i])
-				{
-					Dfreqs[i]["anc"] = 0.0;
-					Dfreqs[i]["der"] = freq;
-				}
-			}
-			else if(l.size() == 2)
-			{
-				if(it->first == ancestral[i])
-				{
-					Dfreqs[i]["anc"] = freq;
-				}
-				else
-				{
-					Dfreqs[i]["der"] = freq;
-				}
-			}
-			it++;
-		}
-		//std::cout << i << std::endl;
-		//std::cout << "anc = " << Dfreqs[i]["anc"] << std::endl;
-		//std::cout << "der = " << Dfreqs[i]["der"] << std::endl;
 	}
 }
 
@@ -273,10 +124,10 @@ void fnStats::calcFstats(fnFiles &f)
 	for(unsigned int i=0; i<ancestral.size(); i++)
 	{
 		//get locus counts	
-		std::unordered_map<std::string,int> al = f.getALocus(i);
-		std::unordered_map<std::string,int> bl = f.getBLocus(i);
-		std::unordered_map<std::string,int> cl = f.getCLocus(i);
-		std::unordered_map<std::string,int> dl = f.getDLocus(i);
+		std::unordered_map<std::string,int> al = f.getLocus("A",i);
+		std::unordered_map<std::string,int> bl = f.getLocus("B",i);
+		std::unordered_map<std::string,int> cl = f.getLocus("C",i);
+		std::unordered_map<std::string,int> dl = f.getLocus("D",i);
 
 		//initialize iterators
 		std::unordered_map<std::string,int>::iterator ait = al.begin();
@@ -326,13 +177,13 @@ void fnStats::calcFstats(fnFiles &f)
 		double chz = hz(cvec, ctotal);
 		double dhz = hz(dvec, dtotal);
 
-		double f2i = f2(Afreqs[i]["anc"], Bfreqs[i]["anc"], ahz, bhz, atotal, btotal);
+		double f2i = f2(freqs["A"][i]["anc"], freqs["B"][i]["anc"], ahz, bhz, atotal, btotal);
 		f2total+=f2i;
-		double f3i = f3(Afreqs[i]["anc"], Bfreqs[i]["anc"], Cfreqs[i]["anc"], chz, ctotal);
+		double f3i = f3(freqs["A"][i]["anc"], freqs["B"][i]["anc"], freqs["C"][i]["anc"], chz, ctotal);
 		f3total+=f3i;
-		double f4i = f4(Afreqs[i]["anc"], Bfreqs[i]["anc"], Cfreqs[i]["anc"], Dfreqs[i]["anc"]);
+		double f4i = f4(freqs["A"][i]["anc"], freqs["B"][i]["anc"], freqs["C"][i]["anc"], freqs["D"][i]["anc"]);
 		f4total+=f4i;
-		double fsti = fst(Afreqs[i]["der"], Bfreqs[i]["der"]);
+		double fsti = fst(freqs["A"][i]["der"], freqs["B"][i]["der"]);
 
 		//std::cout << std::fixed;
 		std::cout << "len(a) = " << avec.size() << std::endl;

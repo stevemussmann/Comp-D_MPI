@@ -15,6 +15,8 @@ class fnFiles {
 		std::unordered_map <std::string,int> getALocus(int i);
 		std::unordered_map <std::string,int> getBLocus(int i);
 		std::unordered_map <std::string,int> getCLocus(int i);
+		std::unordered_map <std::string,int> getLocus(std::string s, int i);
+		std::unordered_map <std::string,std::string> ABCDmap;
 	private:
 		std::string infile;
 		std::string popfile;
@@ -26,7 +28,6 @@ class fnFiles {
 		void blacklist();
 		std::unordered_map<std::string,std::vector<std::unordered_map<std::string,int > > > data;
 		std::unordered_map <std::string,std::string> popmap;
-		std::unordered_map <std::string,std::string> ABCDmap;
 		std::string iupac(std::string ambig);
 };
 

@@ -47,6 +47,11 @@ std::unordered_map <std::string,int> fnFiles::getCLocus(int i)
 	return data["C"][i];
 }
 
+std::unordered_map <std::string,int> fnFiles::getLocus(std::string s, int i)
+{
+	return data[s][i];
+}
+
 unsigned int fnFiles::getLength()
 {
 	int counter=0;

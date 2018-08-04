@@ -28,9 +28,9 @@ int main(int argc, char** argv) {
 	fnFiles f(infile, popmap, abcd, vsize);
 	f.readfiles();
 
-	fnStats fs(f.getLength());
+	fnStats fs(f.getLength(), f.ABCDmap);
 	fs.findAncestral(f);
-	fs.calcAllFreqs(f);
+	fs.calcAllFreqs(f, f.ABCDmap);
 	fs.calcFstats(f);
 
 	return 0;
