@@ -13,6 +13,7 @@ namespace opt = boost::program_options;
 void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &abcd, int &vsize, bool &two, bool &three, bool &four, int &bootstrap);
 double average(std::vector<double> &v);
 double stdev(std::vector<double> &v, double avg);
+double calcZ(double f, double sd);
 
 int main(int argc, char** argv) {
 
@@ -56,18 +57,27 @@ int main(int argc, char** argv) {
 	fnStats fs(f.getLength(), f.ABCDmap);
 	fs.findAncestral(f);
 	fs.calcAllFreqs(f, f.ABCDmap);
+	double f2 = 0.0;
+	double f3 = 0.0;
+	double f4 = 0.0;
 
 	if(two == true)
 	{
 		fs.calcF2(f,returnv);
+		f2 = returnv[0];
 	}
 	else if (three == true)
 	{
 		fs.calcF3(f,returnv);
+		f2 = returnv[0];
+		f3 = returnv[1];
 	}
 	else if(four == true)
 	{
 		fs.calcF4(f,returnv);
+		f2 = returnv[0];
+		f3 = returnv[1];
+		f4 = returnv[2];
 	}
 	else
 	{
@@ -131,13 +141,22 @@ int main(int argc, char** argv) {
 	double f2sd = 0.0;
 	double f3sd = 0.0;
 	double f4sd = 0.0;
+
+	double f2Z = 0.0;
+	double f3Z = 0.0;
+	double f4Z = 0.0;
+	double f2Zp = 0.0;
+	double f3Zp = 0.0;
+	double f4Zp = 0.0;
 	
 	if(two == true)
 	{
 		f2mean = average(f2bv);
 		f2sd = stdev(f2bv,f2mean);
+		f2Z = calcZ(f2,f2sd);
 		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
 		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
+		std::cout << "F2 Z = " << f2Z << std::endl;
 	}
 	else if(three == true)
 	{
@@ -145,10 +164,14 @@ int main(int argc, char** argv) {
 		f3mean = average(f3bv);
 		f2sd = stdev(f2bv,f2mean);
 		f3sd = stdev(f3bv,f3mean);
+		f2Z = calcZ(f2,f2sd);
+		f3Z = calcZ(f3,f3sd);
 		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
 		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
+		std::cout << "F2 Z = " << f2Z << std::endl;
 		std::cout << "F3 bootstrap mean = " << f3mean << std::endl;
 		std::cout << "F3 bootstrap stdev = " << f3sd << std::endl;
+		std::cout << "F3 Z = " << f3Z << std::endl;
 	}
 	else if(four == true)
 	{
@@ -158,12 +181,18 @@ int main(int argc, char** argv) {
 		f2sd = stdev(f2bv,f2mean);
 		f3sd = stdev(f3bv,f3mean);
 		f4sd = stdev(f4bv,f4mean);
+		f2Z = calcZ(f2,f2sd);
+		f3Z = calcZ(f3,f3sd);
+		f4Z = calcZ(f4,f4sd);
 		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
 		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
+		std::cout << "F2 Z = " << f2Z << std::endl;
 		std::cout << "F3 bootstrap mean = " << f3mean << std::endl;
 		std::cout << "F3 bootstrap stdev = " << f3sd << std::endl;
+		std::cout << "F3 Z = " << f3Z << std::endl;
 		std::cout << "F4 bootstrap mean = " << f4mean << std::endl;
 		std::cout << "F4 bootstrap stdev = " << f4sd << std::endl;
+		std::cout << "F4 Z = " << f4Z << std::endl;
 	}
 	else
 	{
@@ -260,4 +289,18 @@ double stdev(std::vector<double> &v, double avg)
 	double sd = sqrt(var);
 
 	return sd;
+}
+
+double calcZ(double f, double sd)
+{
+	double Z;
+	if(sd==0)
+	{
+		Z=0.0;
+	}
+	else
+	{
+		Z = (0.0-f) / sd;
+	}
+	return Z;
 }
