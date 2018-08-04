@@ -19,9 +19,10 @@ fnFiles::fnFiles(std::string i, std::string p, std::string abcd, int vectorsize)
 	popfile = p;
 	ABCDfile = abcd;
 	readABCDfile(); //must read ABCDfile in the constructor to get taxa invovled
-	for(std::unordered_map<std::string,std::string>::iterator it = popmap.begin(); it != popmap.end(); it++)
+	for(std::unordered_map<std::string,std::string>::iterator it = ABCDmap.begin(); it != ABCDmap.end(); it++)
 	{
-		std::cout << it->second << std::endl;
+		data[it->second].resize(vectorsize);
+		//std::cout << it->second << std::endl;
 	}
 	//outgroup = o;
 	A.resize(vectorsize);
@@ -136,7 +137,12 @@ void fnFiles::readPhylip()
 								as1 << bases[1];
 								as0 >> allele0;
 								as1 >> allele1;
+
+								// new data structure
+								data[popmap[tokens[0]]][i][allele0]+=1;
+								data[popmap[tokens[0]]][i][allele1]+=1;
 		
+								// old data structure
 								if(ABCDmap[popmap[tokens[0]]] == "A")
 								{
 									A[i][allele0]+=1;
@@ -165,6 +171,10 @@ void fnFiles::readPhylip()
 							}
 							else if( tempstring == "A" || tempstring == "C" || tempstring == "G" || tempstring == "T")
 							{
+								// new data structure
+								data[popmap[tokens[0]]][i][tempstring]+=2;
+
+								// old data structure
 								if(ABCDmap[popmap[tokens[0]]] == "A")
 								{
 									A[i][tempstring]+=2;
