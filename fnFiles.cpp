@@ -26,41 +26,44 @@ fnFiles::fnFiles(std::string i, std::string p, std::string abcd, int vectorsize)
 	}
 
 }
-/*
-std::unordered_map <std::string,int> fnFiles::getDLocus(int i)
+
+void fnFiles::checkF2()
 {
-	return data["D"][i];
+	std::vector<std::string> v = {"A","B","O"};
+	checkPops(v);
 }
 
-std::unordered_map <std::string,int> fnFiles::getALocus(int i)
+void fnFiles::checkF3()
 {
-	return data["A"][i];
+	std::vector<std::string> v = {"A","B","C","O"};
+	checkPops(v);
 }
 
-std::unordered_map <std::string,int> fnFiles::getBLocus(int i)
+void fnFiles::checkF4()
 {
-	return data["B"][i];
+	std::vector<std::string> v = {"A","B","C","D","O"};
+	checkPops(v);
 }
 
-std::unordered_map <std::string,int> fnFiles::getCLocus(int i)
+void fnFiles::checkPops(std::vector<std::string> &v)
 {
-	return data["C"][i];
-}
-*/
+	std::unordered_map<std::string,std::string> temp;
+	for(std::unordered_map<std::string,std::string>::iterator it = ABCDmap.begin(); it != ABCDmap.end(); it++)
+	{
+		temp[it->second] = it->first;
+	}
 
-void checkF2()
-{
+	for(unsigned int i=0; i<v.size(); i++){
 
-}
+		std::unordered_map<std::string,std::string>::const_iterator got = temp.find(v.at(i));
+		if(got == temp.end())
+		{
+			std::cout << "Taxon " << v.at(i) << " was not found in your population file." << std::endl;
+			std::cout << "Please check your population file." << std::endl << std::endl;
+			exit(EXIT_FAILURE);
+		}
 
-void checkF3()
-{
-
-}
-
-void checkF4()
-{
-
+	}
 }
 
 std::unordered_map <std::string,int> fnFiles::getLocus(std::string s, int i)

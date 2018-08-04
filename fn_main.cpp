@@ -40,6 +40,7 @@ int main(int argc, char** argv) {
 	{
 		fnFiles f(infile, popmap, abcd, vsize);
 		f.readfiles();
+		f.checkF4(); // check to see if all taxa are present in input
 
 		fnStats fs(f.getLength(), f.ABCDmap);
 		fs.findAncestral(f);
