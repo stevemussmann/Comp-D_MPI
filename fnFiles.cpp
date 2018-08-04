@@ -24,6 +24,24 @@ fnFiles::fnFiles(std::string i, std::string p, std::string abcd, int vectorsize)
 	{
 		data[it->second].resize(vectorsize);
 	}
+}
+
+// copy constructor for bootstrap replication
+fnFiles::fnFiles(fnFiles f, std::vector<int> &v, std::unordered_map<std::string,std::string> m)
+{
+	for(std::unordered_map<std::string,std::string>::iterator it = m.begin(); it != m.end(); it++)
+	{
+		data[it->second].resize(v.size());
+	}
+	
+	for(unsigned int i=0; i<v.size(); i++)
+	{
+		for(std::unordered_map<std::string,std::string>::iterator it = m.begin(); it!=m.end(); it++)
+		{
+			std::unordered_map<std::string,int> la = f.data[it->second][v[i]];
+			data[it->second][i] = la;
+		}
+	}
 
 }
 
@@ -80,7 +98,7 @@ unsigned int fnFiles::getLength()
 		if(counter == 0)
 		{
 			now = data[it->second].size();
-			std::cout << now << std::endl;
+			//std::cout << now << std::endl;
 		}
 		else
 		{

@@ -21,6 +21,24 @@ fnStats::fnStats(int l, std::unordered_map<std::string,std::string> m)
 	ancestral.resize(l);
 }
 
+// copy constructor (sort of) for bootstrap replication
+fnStats::fnStats(fnStats &fs, std::vector<int> &v, int l, std::unordered_map<std::string,std::string> m)
+{
+	for(std::unordered_map<std::string,std::string>::iterator it = m.begin(); it != m.end(); it++)
+	{
+		freqs[it->second].resize(l);
+	}
+	ancestral.resize(l);
+
+	for(int i=0; i<l; i++){
+		for(std::unordered_map<std::string,std::string>::iterator it = m.begin(); it!=m.end(); it++)
+		{
+			std::unordered_map<std::string,double> la = fs.freqs[it->second][v[i]];
+			freqs[it->second][i] = la;
+		}
+	}
+}
+
 void fnStats::calcAllFreqs(fnFiles &f, std::unordered_map<std::string,std::string> m)
 {
 	for(unsigned int i=0; i<ancestral.size(); i++)
@@ -98,24 +116,141 @@ void fnStats::findAncestral(fnFiles &f)
 			}
 			ancestral[i] = anc;
 		}
-		
-		//std::cout << ancestral[i] << std::endl;
-		//std::cout << l.size() << std::endl;
 	}
 }
 
-/*
-void fnStats::findAncestral(fnFiles &f)
+void fnStats::calcF2(fnFiles &f)
 {
+	double f2total = 0.0;
+
 	for(unsigned int i=0; i<ancestral.size(); i++)
 	{
-		std::unordered_map<std::string,int> l = f.getALocus(i); //get locus for outgroup
-		std::unordered_map<std::string,int>::iterator it = l.begin(); //start iterator
-		ancestral[i] = it->first; //if only one allele, set it as ancestral state.
+		//get locus counts	
+		std::unordered_map<std::string,int> al = f.getLocus("A",i);
+		std::unordered_map<std::string,int> bl = f.getLocus("B",i);
+
+		//initialize iterators
+		std::unordered_map<std::string,int>::iterator ait = al.begin();
+		std::unordered_map<std::string,int>::iterator bit = bl.begin();
+
+		std::vector<int> avec;
+		std::vector<int> bvec;
+
+		int atotal=0;
+		while(ait != al.end())
+		{
+			atotal += ait->second;
+			avec.push_back(ait->second);
+			ait++;
+		}
+
+		int btotal=0;
+		while(bit != bl.end())
+		{
+			btotal += bit->second;
+			bvec.push_back(bit->second);
+			bit++;
+		}
+
+		double ahz = hz(avec, atotal);
+		double bhz = hz(bvec, btotal);
+
+		double f2i = f2(freqs["A"][i]["anc"], freqs["B"][i]["anc"], ahz, bhz, atotal, btotal);
+		f2total+=f2i;
+		double fsti = fst(freqs["A"][i]["der"], freqs["B"][i]["der"]);
+		/*
+		//std::cout << std::fixed;
+		std::cout << "len(a) = " << avec.size() << std::endl;
+		std::cout << "len(b) = " << bvec.size() << std::endl;
+		std::cout << "ahz = " << ahz << std::endl;
+		std::cout << "bhz = " << bhz << std::endl;
+		std::cout << "f2 = " << f2i << std::endl;
+		std::cout << "fst = " << fsti << std::endl;
+		std::cout << std::endl;
+		*/
 	}
+	std::cout << std::endl << std::endl;
+	double f2avg = f2total/(double)ancestral.size();
+	std::cout << "f2avg = " << f2avg << std::endl;
 }
-*/
-void fnStats::calcFstats(fnFiles &f)
+
+void fnStats::calcF3(fnFiles &f)
+{
+	double f2total = 0.0;
+	double f3total = 0.0;
+
+	for(unsigned int i=0; i<ancestral.size(); i++)
+	{
+		//get locus counts	
+		std::unordered_map<std::string,int> al = f.getLocus("A",i);
+		std::unordered_map<std::string,int> bl = f.getLocus("B",i);
+		std::unordered_map<std::string,int> cl = f.getLocus("C",i);
+
+		//initialize iterators
+		std::unordered_map<std::string,int>::iterator ait = al.begin();
+		std::unordered_map<std::string,int>::iterator bit = bl.begin();
+		std::unordered_map<std::string,int>::iterator cit = cl.begin();
+
+		std::vector<int> avec;
+		std::vector<int> bvec;
+		std::vector<int> cvec;
+
+		int atotal=0;
+		while(ait != al.end())
+		{
+			atotal += ait->second;
+			avec.push_back(ait->second);
+			ait++;
+		}
+
+		int btotal=0;
+		while(bit != bl.end())
+		{
+			btotal += bit->second;
+			bvec.push_back(bit->second);
+			bit++;
+		}
+
+		int ctotal=0;
+		while(cit != cl.end())
+		{
+			ctotal += cit->second;
+			cvec.push_back(cit->second);
+			cit++;
+		}
+
+		double ahz = hz(avec, atotal);
+		double bhz = hz(bvec, btotal);
+		double chz = hz(cvec, ctotal);
+
+		double f2i = f2(freqs["A"][i]["anc"], freqs["B"][i]["anc"], ahz, bhz, atotal, btotal);
+		f2total+=f2i;
+		double f3i = f3(freqs["A"][i]["anc"], freqs["B"][i]["anc"], freqs["C"][i]["anc"], chz, ctotal);
+		f3total+=f3i;
+		double fsti = fst(freqs["A"][i]["der"], freqs["B"][i]["der"]);
+		/*
+		//std::cout << std::fixed;
+		std::cout << "len(a) = " << avec.size() << std::endl;
+		std::cout << "len(b) = " << bvec.size() << std::endl;
+		std::cout << "len(c) = " << cvec.size() << std::endl;
+		std::cout << "ahz = " << ahz << std::endl;
+		std::cout << "bhz = " << bhz << std::endl;
+		std::cout << "chz = " << chz << std::endl;
+		std::cout << "f2 = " << f2i << std::endl;
+		std::cout << "f3 = " << f3i << std::endl;
+		//std::cout << std::setprecision(10) << "f4 = " << f4i << std::endl;
+		std::cout << "fst = " << fsti << std::endl;
+		std::cout << std::endl;
+		*/
+	}
+	std::cout << std::endl << std::endl;
+	double f2avg = f2total/(double)ancestral.size();
+	double f3avg = f3total/(double)ancestral.size();
+	std::cout << "f2avg = " << f2avg << std::endl;
+	std::cout << "f3avg = " << f3avg << std::endl;
+}
+
+void fnStats::calcF4(fnFiles &f)
 {
 	double f2total = 0.0;
 	double f3total = 0.0;
@@ -185,6 +320,7 @@ void fnStats::calcFstats(fnFiles &f)
 		f4total+=f4i;
 		double fsti = fst(freqs["A"][i]["der"], freqs["B"][i]["der"]);
 
+		/*
 		//std::cout << std::fixed;
 		std::cout << "len(a) = " << avec.size() << std::endl;
 		std::cout << "len(b) = " << bvec.size() << std::endl;
@@ -198,7 +334,7 @@ void fnStats::calcFstats(fnFiles &f)
 		std::cout << "f4 = " << f4i << std::endl;
 		std::cout << "fst = " << fsti << std::endl;
 		std::cout << std::endl;
-		
+		*/
 	}
 	std::cout << std::endl << std::endl;
 	double f2avg = f2total/(double)ancestral.size();

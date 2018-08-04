@@ -12,9 +12,12 @@
 class fnStats {
 	public:
 		fnStats(int l, std::unordered_map<std::string,std::string> m);
+		fnStats(fnStats &fs, std::vector<int> &v, int l, std::unordered_map<std::string,std::string> m);
 		void calcAllFreqs(fnFiles &f, std::unordered_map<std::string,std::string> m);
 		void findAncestral(fnFiles &f);
-		void calcFstats(fnFiles &f);
+		void calcF2(fnFiles &f);
+		void calcF3(fnFiles &f);
+		void calcF4(fnFiles &f);
 	private:
 		//record alleles as anc (ancestral) and derived (der)
 		std::unordered_map<std::string,std::vector<std::unordered_map<std::string,double> > > freqs;
