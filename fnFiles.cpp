@@ -26,7 +26,7 @@ fnFiles::fnFiles(std::string i, std::string p, std::string abcd, int vectorsize)
 	}
 
 }
-
+/*
 std::unordered_map <std::string,int> fnFiles::getDLocus(int i)
 {
 	return data["D"][i];
@@ -45,6 +45,22 @@ std::unordered_map <std::string,int> fnFiles::getBLocus(int i)
 std::unordered_map <std::string,int> fnFiles::getCLocus(int i)
 {
 	return data["C"][i];
+}
+*/
+
+void checkF2()
+{
+
+}
+
+void checkF3()
+{
+
+}
+
+void checkF4()
+{
+
 }
 
 std::unordered_map <std::string,int> fnFiles::getLocus(std::string s, int i)

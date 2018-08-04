@@ -28,7 +28,15 @@ int main(int argc, char** argv) {
 	//std::cout << "Hello World!" << std::endl;
 
 	//fnFiles f(infile, popmap, outgroup, abcd, vsize);
-	if(four == true)
+	if(two == true)
+	{
+		
+	}
+	else if (three == true)
+	{
+
+	}
+	else if(four == true)
 	{
 		fnFiles f(infile, popmap, abcd, vsize);
 		f.readfiles();
@@ -37,6 +45,11 @@ int main(int argc, char** argv) {
 		fs.findAncestral(f);
 		fs.calcAllFreqs(f, f.ABCDmap);
 		fs.calcFstats(f);
+	}
+	else
+	{
+		std::cerr << "No F statistic option was selected." << std::endl;
+		exit(EXIT_FAILURE);
 	}
 
 	return 0;

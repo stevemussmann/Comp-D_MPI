@@ -72,12 +72,12 @@ void fnStats::calcAllFreqs(fnFiles &f, std::unordered_map<std::string,std::strin
 	}
 }
 
-/*
+
 void fnStats::findAncestral(fnFiles &f)
 {
 	for(unsigned int i=0; i<ancestral.size(); i++)
 	{
-		std::unordered_map<std::string,int> l = f.getDLocus(i); //get locus for outgroup
+		std::unordered_map<std::string,int> l = f.getLocus("O",i); //get locus for outgroup
 
 		std::unordered_map<std::string,int>::iterator it = l.begin(); //start iterator
 		if(l.size() == 1)
@@ -103,8 +103,8 @@ void fnStats::findAncestral(fnFiles &f)
 		//std::cout << l.size() << std::endl;
 	}
 }
-*/
 
+/*
 void fnStats::findAncestral(fnFiles &f)
 {
 	for(unsigned int i=0; i<ancestral.size(); i++)
@@ -114,7 +114,7 @@ void fnStats::findAncestral(fnFiles &f)
 		ancestral[i] = it->first; //if only one allele, set it as ancestral state.
 	}
 }
-
+*/
 void fnStats::calcFstats(fnFiles &f)
 {
 	double f2total = 0.0;

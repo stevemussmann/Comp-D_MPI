@@ -11,10 +11,12 @@ class fnFiles {
 		fnFiles(std::string i, std::string p, std::string a, int vectorsize);
 		void readfiles();
 		unsigned int getLength();
+		/*
 		std::unordered_map <std::string,int> getDLocus(int i);
 		std::unordered_map <std::string,int> getALocus(int i);
 		std::unordered_map <std::string,int> getBLocus(int i);
 		std::unordered_map <std::string,int> getCLocus(int i);
+		*/
 		std::unordered_map <std::string,int> getLocus(std::string s, int i);
 		std::unordered_map <std::string,std::string> ABCDmap;
 	private:
@@ -29,6 +31,9 @@ class fnFiles {
 		std::unordered_map<std::string,std::vector<std::unordered_map<std::string,int > > > data;
 		std::unordered_map <std::string,std::string> popmap;
 		std::string iupac(std::string ambig);
+		void checkF4();
+		void checkF3();
+		void checkF2();
 };
 
 #endif
