@@ -10,7 +10,7 @@ class fnFiles {
 		//fnFiles(std::string i, std::string p, std::string o, std::string a, int vectorsize);
 		fnFiles(std::string i, std::string p, std::string a, int vectorsize);
 		void readfiles();
-		int getLength();
+		unsigned int getLength();
 		std::unordered_map <std::string,int> getOutgroupLocus(int i);
 		std::unordered_map <std::string,int> getALocus(int i);
 		std::unordered_map <std::string,int> getBLocus(int i);

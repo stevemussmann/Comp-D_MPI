@@ -47,8 +47,34 @@ std::unordered_map <std::string,int> fnFiles::getCLocus(int i)
 	return data["C"][i];
 }
 
-int fnFiles::getLength()
+unsigned int fnFiles::getLength()
 {
+	int counter=0;
+	unsigned int now = 0;
+	for(std::unordered_map<std::string,std::string>::iterator it = ABCDmap.begin(); it != ABCDmap.end(); it++)
+	{
+		if(counter == 0)
+		{
+			now = data[it->second].size();
+			std::cout << now << std::endl;
+		}
+		else
+		{
+			if( now != data[it->second].size() )
+			{
+				std::cerr << "Vectors holding data for taxa A,B,C, and D are different lengths." << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			else
+			{
+				now = data[it->second].size();
+			}
+		}
+		counter++;
+	}
+
+	return now;
+	/*
 	if(data["A"].size() == data["B"].size() && data["B"].size() == data["C"].size() && data["C"].size() == data["D"].size())
 	{
 		return data["A"].size();
@@ -58,6 +84,7 @@ int fnFiles::getLength()
 		std::cerr << "Vectors holding data for taxa A,B,C, and D are different lengths." << std::endl;
 		exit(EXIT_FAILURE);
 	}
+	*/
 }
 
 void fnFiles::readfiles()
