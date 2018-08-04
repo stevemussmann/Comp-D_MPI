@@ -29,6 +29,7 @@ void fnStats::calcAllFreqs(fnFiles &f)
 	calcDFreqs(f);
 }
 
+/*
 void fnStats::findAncestral(fnFiles &f)
 {
 	for(unsigned int i=0; i<ancestral.size(); i++)
@@ -57,6 +58,17 @@ void fnStats::findAncestral(fnFiles &f)
 		
 		//std::cout << ancestral[i] << std::endl;
 		//std::cout << l.size() << std::endl;
+	}
+}
+*/
+
+void fnStats::findAncestral(fnFiles &f)
+{
+	for(unsigned int i=0; i<ancestral.size(); i++)
+	{
+		std::unordered_map<std::string,int> l = f.getOutgroupLocus(i); //get locus for outgroup
+		std::unordered_map<std::string,int>::iterator it = l.begin(); //start iterator
+		ancestral[i] = it->first; //if only one allele, set it as ancestral state.
 	}
 }
 
@@ -254,6 +266,10 @@ void fnStats::calcDFreqs(fnFiles &f)
 
 void fnStats::calcFstats(fnFiles &f)
 {
+	double f2total = 0.0;
+	double f3total = 0.0;
+	double f4total = 0.0;
+
 	for(unsigned int i=0; i<ancestral.size(); i++)
 	{
 		//get locus counts	
@@ -311,8 +327,11 @@ void fnStats::calcFstats(fnFiles &f)
 		double dhz = hz(dvec, dtotal);
 
 		double f2i = f2(Afreqs[i]["anc"], Bfreqs[i]["anc"], ahz, bhz, atotal, btotal);
+		f2total+=f2i;
 		double f3i = f3(Afreqs[i]["anc"], Bfreqs[i]["anc"], Cfreqs[i]["anc"], chz, ctotal);
+		f3total+=f3i;
 		double f4i = f4(Afreqs[i]["anc"], Bfreqs[i]["anc"], Cfreqs[i]["anc"], Dfreqs[i]["anc"]);
+		f4total+=f4i;
 		double fsti = fst(Afreqs[i]["der"], Bfreqs[i]["der"]);
 
 		//std::cout << std::fixed;
@@ -330,6 +349,13 @@ void fnStats::calcFstats(fnFiles &f)
 		std::cout << std::endl;
 		
 	}
+	std::cout << std::endl << std::endl;
+	double f2avg = f2total/(double)ancestral.size();
+	double f3avg = f3total/(double)ancestral.size();
+	double f4avg = f4total/(double)ancestral.size();
+	std::cout << "f2avg = " << f2avg << std::endl;
+	std::cout << "f3avg = " << f3avg << std::endl;
+	std::cout << "f4avg = " << f4avg << std::endl;
 }
 
 double fnStats::hz(std::vector<int> &v, int t)
