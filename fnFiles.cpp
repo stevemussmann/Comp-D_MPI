@@ -23,23 +23,7 @@ fnFiles::fnFiles(std::string i, std::string p, std::string abcd, int vectorsize)
 	for(std::unordered_map<std::string,std::string>::iterator it = ABCDmap.begin(); it != ABCDmap.end(); it++)
 	{
 		data[it->second].resize(vectorsize);
-		//std::cout << it->second << std::endl;
 	}
-	/*
-	for(std::unordered_map<std::string,std::string>::iterator it = popmap.begin(); it != popmap.end(); it++)
-	{
-		//data[it->second].resize(vectorsize);
-		std::cout << it->first << std::endl;
-	}
-	*/
-	//outgroup = o;
-
-	/*
-	A.resize(vectorsize);
-	B.resize(vectorsize);
-	C.resize(vectorsize);
-	D.resize(vectorsize);
-	*/
 
 }
 
@@ -130,8 +114,6 @@ void fnFiles::readPhylip()
 						}
 						for(int i=0; i<locnumber; i++) //put species name into locusfile object
 						{
-							//species[i].push_back(tokens[0]);
-
 							//std::cout << "Putting data into data structure" << std::endl;
 	
 							std::stringstream ss;
@@ -152,68 +134,15 @@ void fnFiles::readPhylip()
 								as1 >> allele1;
 
 								// new data structure
-								//std::cout << popmap[tokens[0]] << std::endl << std::flush;
 								data[ABCDmap[popmap[tokens[0]]]][i][allele0]+=1;
 								data[ABCDmap[popmap[tokens[0]]]][i][allele1]+=1;
 		
-								// old data structure
-								/*
-								if(ABCDmap[popmap[tokens[0]]] == "A")
-								{
-									A[i][allele0]+=1;
-									A[i][allele1]+=1;
-								}
-								else if(ABCDmap[popmap[tokens[0]]] == "B")
-								{
-									B[i][allele0]+=1;
-									B[i][allele1]+=1;
-								}
-								else if(ABCDmap[popmap[tokens[0]]] == "C")
-								{
-									C[i][allele0]+=1;
-									C[i][allele1]+=1;
-								}
-								else if(ABCDmap[popmap[tokens[0]]] == "D")
-								{
-									D[i][allele0]+=1;
-									D[i][allele1]+=1;
-								}
-								else
-								{
-									std::cout << "This code should be unreachable" << std::endl;
-									exit(EXIT_FAILURE);
-								}
-								*/
 							}
 							else if( tempstring == "A" || tempstring == "C" || tempstring == "G" || tempstring == "T")
 							{
 								// new data structure
 								data[ABCDmap[popmap[tokens[0]]]][i][tempstring]+=2;
 
-								// old data structure
-								/*
-								if(ABCDmap[popmap[tokens[0]]] == "A")
-								{
-									A[i][tempstring]+=2;
-								}
-								else if(ABCDmap[popmap[tokens[0]]] == "B")
-								{
-									B[i][tempstring]+=2;
-								}
-								else if(ABCDmap[popmap[tokens[0]]] == "C")
-								{
-									C[i][tempstring]+=2;
-								}
-								else if(ABCDmap[popmap[tokens[0]]] == "D")
-								{
-									D[i][tempstring]+=2;
-								}
-								else
-								{
-									std::cout << "This code should be unreachable" << std::endl;
-									exit(EXIT_FAILURE);
-								}
-								*/
 							}
 						}
 					}
@@ -298,42 +227,23 @@ void fnFiles::blacklist()
 
 	for(unsigned int i=0; i<data["A"].size(); i++)
 	{
-		//std::cout << A[i].size() << std::endl;
-
-		// all loci with > 2 alleles or missing data in at least one population are blacklisted
-		if(data["A"][i].size() < 1 || data["A"][i].size() > 2)
+		for(std::unordered_map<std::string,std::string>::iterator it = ABCDmap.begin(); it != ABCDmap.end(); it++)
 		{
-			bl[i]++;
-		}
-		if(data["B"][i].size() < 1 || data["B"][i].size() > 2)
-		{
-			bl[i]++;
-		}
-		if(data["C"][i].size() < 1 || data["C"][i].size() > 2)
-		{
-			bl[i]++;
-		}
-		if(data["D"][i].size() < 1 || data["D"][i].size() > 2)
-		{
-			bl[i]++;
+			if(data[it->second][i].size() < 1 || data[it->second][i].size() > 2)
+			{
+				bl[i]++;
+			}
 		}
 	}
-
-	std::map<int,int>::iterator it = bl.begin();
-
 
 	//remove loci from vectors
+	std::map<int,int>::iterator it = bl.begin();
 	while(it != bl.end())
 	{
-		data["A"].erase(data["A"].begin()+it->first);
-		data["B"].erase(data["B"].begin()+it->first);
-		data["C"].erase(data["C"].begin()+it->first);
-		data["D"].erase(data["D"].begin()+it->first);
-		//std::cout << it->first << std::endl;
+		for(std::unordered_map<std::string,std::string>::iterator itt = ABCDmap.begin(); itt != ABCDmap.end(); itt++)
+		{
+			data[itt->second].erase(data[itt->second].begin()+it->first);
+		}
 		it++;
 	}
-	//std::cout << A.size() << std::endl;
-	//std::cout << B.size() << std::endl;
-	//std::cout << C.size() << std::endl;
-	//std::cout << D.size() << std::endl;
 }
