@@ -15,9 +15,9 @@ class fnStats {
 		fnStats(fnStats &fs, std::vector<int> &v, int l, std::unordered_map<std::string,std::string> m);
 		void calcAllFreqs(fnFiles &f, std::unordered_map<std::string,std::string> m);
 		void findAncestral(fnFiles &f);
-		void calcF2(fnFiles &f);
-		void calcF3(fnFiles &f);
-		void calcF4(fnFiles &f);
+		void calcF2(fnFiles &f, std::vector<double> &rv);
+		void calcF3(fnFiles &f, std::vector<double> &rv);
+		void calcF4(fnFiles &f, std::vector<double> &rv);
 	private:
 		//record alleles as anc (ancestral) and derived (der)
 		std::unordered_map<std::string,std::vector<std::unordered_map<std::string,double> > > freqs;

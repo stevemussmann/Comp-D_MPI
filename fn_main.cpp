@@ -4,19 +4,20 @@
 #include "fnStats.h"
 
 #include <iostream>
+#include <math.h>
 #include <random>
 #include <string>
 
 namespace opt = boost::program_options;
 
-//void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &outgroup, std::string &abcd, int &vsize);
 void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &abcd, int &vsize, bool &two, bool &three, bool &four, int &bootstrap);
+double average(std::vector<double> &v);
+double stdev(std::vector<double> &v, double avg);
 
 int main(int argc, char** argv) {
 
 	std::string infile;
 	std::string popmap;
-	//std::string outgroup;
 	std::string abcd;
 	int vsize;
 	bool two = false;
@@ -24,20 +25,16 @@ int main(int argc, char** argv) {
 	bool four = false;
 	int bootstrap = 0;
 
-	//parseComLine(argc,argv,infile,popmap,outgroup,abcd,vsize);
 	parseComLine(argc,argv,infile,popmap,abcd,vsize,two,three,four,bootstrap);
-
-	//std::cout << "Hello World!" << std::endl;
 
 	//start random number generator
 	std::default_random_engine generator;
 	unsigned int seed = time(0);
 	generator.seed(seed);
 
-
-	//fnFiles f(infile, popmap, outgroup, abcd, vsize);
 	fnFiles f(infile, popmap, abcd, vsize);
 	f.readfiles();
+	std::vector<double> returnv;
 	if(two == true)
 	{
 		f.checkF2(); // check to see if all taxa are present in input
@@ -62,15 +59,15 @@ int main(int argc, char** argv) {
 
 	if(two == true)
 	{
-		fs.calcF2(f);
+		fs.calcF2(f,returnv);
 	}
 	else if (three == true)
 	{
-		fs.calcF3(f);
+		fs.calcF3(f,returnv);
 	}
 	else if(four == true)
 	{
-		fs.calcF4(f);
+		fs.calcF4(f,returnv);
 	}
 	else
 	{
@@ -78,8 +75,18 @@ int main(int argc, char** argv) {
 		exit(EXIT_FAILURE);
 	}
 	// do bootstrapping
+	std::vector<double> f2bv;
+	std::vector<double> f3bv;
+	std::vector<double> f4bv;
+
+	f2bv.resize(bootstrap);
+	f3bv.resize(bootstrap);
+	f4bv.resize(bootstrap);
+
 	for(int i=0; i<bootstrap; i++)
 	{
+		std::vector<double> bootrv;
+		
 		std::vector<int> bootv;
 		bootv.resize(f.getLength());
 		std::uniform_int_distribution<int> uniform(0,f.getLength()-1);
@@ -90,19 +97,25 @@ int main(int argc, char** argv) {
 		{
 			fnStats fsboot(fs,bootv,f.getLength(),f.ABCDmap);
 			fnFiles fboot(f,bootv,f.ABCDmap);
-			fsboot.calcF2(fboot);
+			fsboot.calcF2(fboot,bootrv);
+			f2bv[i] = bootrv[0];
 		}
 		else if (three == true)
 		{
 			fnStats fsboot(fs,bootv,f.getLength(),f.ABCDmap);
 			fnFiles fboot(f,bootv,f.ABCDmap);
-			fsboot.calcF3(fboot);
+			fsboot.calcF3(fboot,bootrv);
+			f2bv[i] = bootrv[0];
+			f3bv[i] = bootrv[1];
 		}
 		else if(four == true)
 		{
 			fnStats fsboot(fs,bootv,f.getLength(),f.ABCDmap);
 			fnFiles fboot(f,bootv,f.ABCDmap);
-			fsboot.calcF4(fboot);
+			fsboot.calcF4(fboot,bootrv);
+			f2bv[i] = bootrv[0];
+			f3bv[i] = bootrv[1];
+			f4bv[i] = bootrv[2];
 		}
 		else
 		{
@@ -110,6 +123,52 @@ int main(int argc, char** argv) {
 			exit(EXIT_FAILURE);
 		}
 
+	}
+	
+	double f2mean = 0.0;
+	double f3mean = 0.0;
+	double f4mean = 0.0;
+	double f2sd = 0.0;
+	double f3sd = 0.0;
+	double f4sd = 0.0;
+	
+	if(two == true)
+	{
+		f2mean = average(f2bv);
+		f2sd = stdev(f2bv,f2mean);
+		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
+		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
+	}
+	else if(three == true)
+	{
+		f2mean = average(f2bv);
+		f3mean = average(f3bv);
+		f2sd = stdev(f2bv,f2mean);
+		f3sd = stdev(f3bv,f3mean);
+		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
+		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
+		std::cout << "F3 bootstrap mean = " << f3mean << std::endl;
+		std::cout << "F3 bootstrap stdev = " << f3sd << std::endl;
+	}
+	else if(four == true)
+	{
+		f2mean = average(f2bv);
+		f3mean = average(f3bv);
+		f4mean = average(f4bv);
+		f2sd = stdev(f2bv,f2mean);
+		f3sd = stdev(f3bv,f3mean);
+		f4sd = stdev(f4bv,f4mean);
+		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
+		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
+		std::cout << "F3 bootstrap mean = " << f3mean << std::endl;
+		std::cout << "F3 bootstrap stdev = " << f3sd << std::endl;
+		std::cout << "F4 bootstrap mean = " << f4mean << std::endl;
+		std::cout << "F4 bootstrap stdev = " << f4sd << std::endl;
+	}
+	else
+	{
+		std::cerr << "No F statistic option was selected." << std::endl;
+		exit(EXIT_FAILURE);
 	}
 
 	return 0;
@@ -174,4 +233,31 @@ void parseComLine(int argc, char **argv, std::string &infile, std::string &popma
 		exit(EXIT_FAILURE);
 	}
 	
+}
+
+double average(std::vector<double> &v)
+{
+	double sum = 0.0;
+	for(unsigned int i=0; i<v.size(); i++)
+	{
+		sum+=v.at(i);
+	}
+	double avg = sum/(double)v.size();
+
+	return avg;
+}
+
+double stdev(std::vector<double> &v, double avg)
+{
+	double var = 0.0;
+	for(unsigned int i=0; i<v.size(); i++)
+	{
+		double dev = pow((v.at(i) - avg), 2.0);
+		var+= dev;
+	}
+	var = var/(double)v.size();
+
+	double sd = sqrt(var);
+
+	return sd;
 }

@@ -119,7 +119,7 @@ void fnStats::findAncestral(fnFiles &f)
 	}
 }
 
-void fnStats::calcF2(fnFiles &f)
+void fnStats::calcF2(fnFiles &f, std::vector<double> &rv)
 {
 	double f2total = 0.0;
 
@@ -172,9 +172,10 @@ void fnStats::calcF2(fnFiles &f)
 	std::cout << std::endl << std::endl;
 	double f2avg = f2total/(double)ancestral.size();
 	std::cout << "f2avg = " << f2avg << std::endl;
+	rv.push_back(f2avg);
 }
 
-void fnStats::calcF3(fnFiles &f)
+void fnStats::calcF3(fnFiles &f, std::vector<double> &rv)
 {
 	double f2total = 0.0;
 	double f3total = 0.0;
@@ -248,9 +249,11 @@ void fnStats::calcF3(fnFiles &f)
 	double f3avg = f3total/(double)ancestral.size();
 	std::cout << "f2avg = " << f2avg << std::endl;
 	std::cout << "f3avg = " << f3avg << std::endl;
+	rv.push_back(f2avg);
+	rv.push_back(f3avg);
 }
 
-void fnStats::calcF4(fnFiles &f)
+void fnStats::calcF4(fnFiles &f, std::vector<double> &rv)
 {
 	double f2total = 0.0;
 	double f3total = 0.0;
@@ -343,6 +346,9 @@ void fnStats::calcF4(fnFiles &f)
 	std::cout << "f2avg = " << f2avg << std::endl;
 	std::cout << "f3avg = " << f3avg << std::endl;
 	std::cout << "f4avg = " << f4avg << std::endl;
+	rv.push_back(f2avg);
+	rv.push_back(f3avg);
+	rv.push_back(f4avg);
 }
 
 double fnStats::hz(std::vector<int> &v, int t)
