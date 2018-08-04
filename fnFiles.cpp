@@ -19,44 +19,55 @@ fnFiles::fnFiles(std::string i, std::string p, std::string abcd, int vectorsize)
 	popfile = p;
 	ABCDfile = abcd;
 	readABCDfile(); //must read ABCDfile in the constructor to get taxa invovled
+	readPopfile();
 	for(std::unordered_map<std::string,std::string>::iterator it = ABCDmap.begin(); it != ABCDmap.end(); it++)
 	{
 		data[it->second].resize(vectorsize);
 		//std::cout << it->second << std::endl;
 	}
+	/*
+	for(std::unordered_map<std::string,std::string>::iterator it = popmap.begin(); it != popmap.end(); it++)
+	{
+		//data[it->second].resize(vectorsize);
+		std::cout << it->first << std::endl;
+	}
+	*/
 	//outgroup = o;
+
+	/*
 	A.resize(vectorsize);
 	B.resize(vectorsize);
 	C.resize(vectorsize);
 	D.resize(vectorsize);
+	*/
 
 }
 
 std::unordered_map <std::string,int> fnFiles::getOutgroupLocus(int i)
 {
-	return D[i];
+	return data["D"][i];
 }
 
 std::unordered_map <std::string,int> fnFiles::getALocus(int i)
 {
-	return A[i];
+	return data["A"][i];
 }
 
 std::unordered_map <std::string,int> fnFiles::getBLocus(int i)
 {
-	return B[i];
+	return data["B"][i];
 }
 
 std::unordered_map <std::string,int> fnFiles::getCLocus(int i)
 {
-	return C[i];
+	return data["C"][i];
 }
 
 int fnFiles::getLength()
 {
-	if(A.size() == B.size() && B.size() == C.size() && C.size() == D.size())
+	if(data["A"].size() == data["B"].size() && data["B"].size() == data["C"].size() && data["C"].size() == data["D"].size())
 	{
-		return A.size();
+		return data["A"].size();
 	}
 	else
 	{
@@ -68,8 +79,8 @@ int fnFiles::getLength()
 void fnFiles::readfiles()
 {
 	std::cout << "Reading files" << std::endl;
-	readPopfile();
 	readPhylip();
+	std::cout << "blacklisting loci" << std::endl;
 	blacklist();
 }
 
@@ -120,6 +131,8 @@ void fnFiles::readPhylip()
 						for(int i=0; i<locnumber; i++) //put species name into locusfile object
 						{
 							//species[i].push_back(tokens[0]);
+
+							//std::cout << "Putting data into data structure" << std::endl;
 	
 							std::stringstream ss;
 							std::string tempstring;
@@ -139,10 +152,12 @@ void fnFiles::readPhylip()
 								as1 >> allele1;
 
 								// new data structure
-								data[popmap[tokens[0]]][i][allele0]+=1;
-								data[popmap[tokens[0]]][i][allele1]+=1;
+								//std::cout << popmap[tokens[0]] << std::endl << std::flush;
+								data[ABCDmap[popmap[tokens[0]]]][i][allele0]+=1;
+								data[ABCDmap[popmap[tokens[0]]]][i][allele1]+=1;
 		
 								// old data structure
+								/*
 								if(ABCDmap[popmap[tokens[0]]] == "A")
 								{
 									A[i][allele0]+=1;
@@ -168,13 +183,15 @@ void fnFiles::readPhylip()
 									std::cout << "This code should be unreachable" << std::endl;
 									exit(EXIT_FAILURE);
 								}
+								*/
 							}
 							else if( tempstring == "A" || tempstring == "C" || tempstring == "G" || tempstring == "T")
 							{
 								// new data structure
-								data[popmap[tokens[0]]][i][tempstring]+=2;
+								data[ABCDmap[popmap[tokens[0]]]][i][tempstring]+=2;
 
 								// old data structure
+								/*
 								if(ABCDmap[popmap[tokens[0]]] == "A")
 								{
 									A[i][tempstring]+=2;
@@ -196,6 +213,7 @@ void fnFiles::readPhylip()
 									std::cout << "This code should be unreachable" << std::endl;
 									exit(EXIT_FAILURE);
 								}
+								*/
 							}
 						}
 					}
@@ -278,24 +296,24 @@ void fnFiles::blacklist()
 {
 	std::map<int,int, std::greater<int> > bl; //list of blacklisted loci
 
-	for(unsigned int i=0; i<A.size(); i++)
+	for(unsigned int i=0; i<data["A"].size(); i++)
 	{
 		//std::cout << A[i].size() << std::endl;
 
 		// all loci with > 2 alleles or missing data in at least one population are blacklisted
-		if(A[i].size() < 1 || A[i].size() > 2)
+		if(data["A"][i].size() < 1 || data["A"][i].size() > 2)
 		{
 			bl[i]++;
 		}
-		if(B[i].size() < 1 || B[i].size() > 2)
+		if(data["B"][i].size() < 1 || data["B"][i].size() > 2)
 		{
 			bl[i]++;
 		}
-		if(C[i].size() < 1 || C[i].size() > 2)
+		if(data["C"][i].size() < 1 || data["C"][i].size() > 2)
 		{
 			bl[i]++;
 		}
-		if(D[i].size() < 1 || D[i].size() > 2)
+		if(data["D"][i].size() < 1 || data["D"][i].size() > 2)
 		{
 			bl[i]++;
 		}
@@ -307,10 +325,10 @@ void fnFiles::blacklist()
 	//remove loci from vectors
 	while(it != bl.end())
 	{
-		A.erase(A.begin()+it->first);
-		B.erase(B.begin()+it->first);
-		C.erase(C.begin()+it->first);
-		D.erase(D.begin()+it->first);
+		data["A"].erase(data["A"].begin()+it->first);
+		data["B"].erase(data["B"].begin()+it->first);
+		data["C"].erase(data["C"].begin()+it->first);
+		data["D"].erase(data["D"].begin()+it->first);
 		//std::cout << it->first << std::endl;
 		it++;
 	}
