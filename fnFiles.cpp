@@ -27,7 +27,7 @@ fnFiles::fnFiles(std::string i, std::string p, std::string abcd, int vectorsize)
 
 }
 
-std::unordered_map <std::string,int> fnFiles::getOutgroupLocus(int i)
+std::unordered_map <std::string,int> fnFiles::getDLocus(int i)
 {
 	return data["D"][i];
 }
@@ -74,17 +74,6 @@ unsigned int fnFiles::getLength()
 	}
 
 	return now;
-	/*
-	if(data["A"].size() == data["B"].size() && data["B"].size() == data["C"].size() && data["C"].size() == data["D"].size())
-	{
-		return data["A"].size();
-	}
-	else
-	{
-		std::cerr << "Vectors holding data for taxa A,B,C, and D are different lengths." << std::endl;
-		exit(EXIT_FAILURE);
-	}
-	*/
 }
 
 void fnFiles::readfiles()

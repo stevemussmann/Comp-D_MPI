@@ -66,7 +66,7 @@ void fnStats::findAncestral(fnFiles &f)
 {
 	for(unsigned int i=0; i<ancestral.size(); i++)
 	{
-		std::unordered_map<std::string,int> l = f.getOutgroupLocus(i); //get locus for outgroup
+		std::unordered_map<std::string,int> l = f.getDLocus(i); //get locus for outgroup
 		std::unordered_map<std::string,int>::iterator it = l.begin(); //start iterator
 		ancestral[i] = it->first; //if only one allele, set it as ancestral state.
 	}
@@ -221,7 +221,7 @@ void fnStats::calcDFreqs(fnFiles &f)
 	for(unsigned int i=0; i<Dfreqs.size(); i++)
 	{
 		int total = 0;
-		std::unordered_map<std::string,int> l = f.getOutgroupLocus(i);
+		std::unordered_map<std::string,int> l = f.getDLocus(i);
 		std::unordered_map<std::string,int>::iterator it = l.begin();
 		while(it != l.end())
 		{
@@ -276,7 +276,7 @@ void fnStats::calcFstats(fnFiles &f)
 		std::unordered_map<std::string,int> al = f.getALocus(i);
 		std::unordered_map<std::string,int> bl = f.getBLocus(i);
 		std::unordered_map<std::string,int> cl = f.getCLocus(i);
-		std::unordered_map<std::string,int> dl = f.getOutgroupLocus(i);
+		std::unordered_map<std::string,int> dl = f.getDLocus(i);
 
 		//initialize iterators
 		std::unordered_map<std::string,int>::iterator ait = al.begin();
