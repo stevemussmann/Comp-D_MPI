@@ -8,6 +8,8 @@
 #include <random>
 #include <string>
 
+#include <boost/math/distributions/normal.hpp>
+
 namespace opt = boost::program_options;
 
 void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &abcd, int &vsize, bool &two, bool &three, bool &four, int &bootstrap);
@@ -148,15 +150,19 @@ int main(int argc, char** argv) {
 	double f2Zp = 0.0;
 	double f3Zp = 0.0;
 	double f4Zp = 0.0;
+
+	boost::math::normal_distribution<> zdist(0.0,1.0);
 	
 	if(two == true)
 	{
 		f2mean = average(f2bv);
 		f2sd = stdev(f2bv,f2mean);
 		f2Z = calcZ(f2,f2sd);
+		f2Zp = 2.0*(1-boost::math::cdf(zdist,fabs(f2Z)));
 		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
 		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
 		std::cout << "F2 Z = " << f2Z << std::endl;
+		std::cout << "F2 Z_p-val = " << f2Zp << std::endl;
 	}
 	else if(three == true)
 	{
@@ -166,12 +172,16 @@ int main(int argc, char** argv) {
 		f3sd = stdev(f3bv,f3mean);
 		f2Z = calcZ(f2,f2sd);
 		f3Z = calcZ(f3,f3sd);
+		f2Zp = 2.0*(1-boost::math::cdf(zdist,fabs(f2Z)));
+		f3Zp = 2.0*(1-boost::math::cdf(zdist,fabs(f3Z)));
 		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
 		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
 		std::cout << "F2 Z = " << f2Z << std::endl;
+		std::cout << "F2 Z_p-val = " << f2Zp << std::endl;
 		std::cout << "F3 bootstrap mean = " << f3mean << std::endl;
 		std::cout << "F3 bootstrap stdev = " << f3sd << std::endl;
 		std::cout << "F3 Z = " << f3Z << std::endl;
+		std::cout << "F3 Z_p-val = " << f3Zp << std::endl;
 	}
 	else if(four == true)
 	{
@@ -184,15 +194,21 @@ int main(int argc, char** argv) {
 		f2Z = calcZ(f2,f2sd);
 		f3Z = calcZ(f3,f3sd);
 		f4Z = calcZ(f4,f4sd);
+		f2Zp = 2.0*(1-boost::math::cdf(zdist,fabs(f2Z)));
+		f3Zp = 2.0*(1-boost::math::cdf(zdist,fabs(f3Z)));
+		f4Zp = 2.0*(1-boost::math::cdf(zdist,fabs(f4Z)));
 		std::cout << "F2 bootstrap mean = " << f2mean << std::endl;
 		std::cout << "F2 bootstrap stdev = " << f2sd << std::endl;
 		std::cout << "F2 Z = " << f2Z << std::endl;
+		std::cout << "F2 Z_p-val = " << f2Zp << std::endl;
 		std::cout << "F3 bootstrap mean = " << f3mean << std::endl;
 		std::cout << "F3 bootstrap stdev = " << f3sd << std::endl;
 		std::cout << "F3 Z = " << f3Z << std::endl;
+		std::cout << "F3 Z_p-val = " << f3Zp << std::endl;
 		std::cout << "F4 bootstrap mean = " << f4mean << std::endl;
 		std::cout << "F4 bootstrap stdev = " << f4sd << std::endl;
 		std::cout << "F4 Z = " << f4Z << std::endl;
+		std::cout << "F4 Z_p-val = " << f4Zp << std::endl;
 	}
 	else
 	{
