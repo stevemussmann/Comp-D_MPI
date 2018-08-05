@@ -5,15 +5,18 @@ This program calculates variations of Patterson's D-statistic, including the ori
 
 ## Compilation
 
-To compile, you must have a recent version of the C++ Boost Libraries and GCC 4.8.1 or newer installed on your computer. Only Boost versions 1.54 and newer have been tested. Download the source code, change directories into the Comp-D_MPI folder, and compile by issuing the command:
+To compile, you must have a recent version of the C++ Boost Libraries and GCC 4.8.1 or newer installed on your computer. Only Boost versions 1.54 and newer have been tested. Additionally, the Boost program_options library must be present, and this is sometimes not installed automatically with the remainder of the Boost libraries. Installation of these libraries under Ubuntu is best handled through your system's package manager to ensure all necessary components are installed.  This is accomplished with the command:
+
+`sudo apt-get install libboost-dev libboost-program-options-dev`
+
+Once all dependencies are installed, download the source code, change directories into the Comp-D_MPI folder, and compile by issuing the command:
 
 `make`
 
-If you wish to automatically install the program to your path, then issue the command:
+To install the program to your path (/usr/local/bin), use the following command:
 
 `sudo make install`
 
-This automatically installs the program into the /usr/local/bin directory.
 
 ## Input Files
 
