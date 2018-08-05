@@ -12,7 +12,7 @@
 
 namespace opt = boost::program_options;
 
-void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &abcd, int &vsize, bool &two, bool &three, bool &four, int &bootstrap);
+void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &abcd, int &vsize, bool &two, bool &three, bool &four, int &bootstrap, bool &phy, bool &str, std::string &missing, int &offset);
 double average(std::vector<double> &v);
 double stdev(std::vector<double> &v, double avg);
 double calcZ(double f, double sd);
@@ -27,8 +27,12 @@ int main(int argc, char** argv) {
 	bool three = false;
 	bool four = false;
 	int bootstrap = 0;
+	bool phy = false;
+	bool str = false;
+	std::string missing;
+	int offset;
 
-	parseComLine(argc,argv,infile,popmap,abcd,vsize,two,three,four,bootstrap);
+	parseComLine(argc,argv,infile,popmap,abcd,vsize,two,three,four,bootstrap,phy,str,missing,offset);
 
 	//start random number generator
 	std::default_random_engine generator;
@@ -36,7 +40,7 @@ int main(int argc, char** argv) {
 	generator.seed(seed);
 
 	fnFiles f(infile, popmap, abcd, vsize);
-	f.readfiles(vsize);
+	f.readfiles(vsize,phy,str,missing,offset);
 	std::vector<double> returnv;
 	if(two == true)
 	{
@@ -219,8 +223,7 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-//void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &outgroup, std::string &abcd, int &vsize)
-void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &abcd, int &vsize, bool &two, bool &three, bool &four, int &bootstrap)
+void parseComLine(int argc, char **argv, std::string &infile, std::string &popmap, std::string &abcd, int &vsize, bool &two, bool &three, bool &four, int &bootstrap, bool &phy, bool &str, std::string &missing, int &offset)
 {
 	opt::options_description desc("--- Option Descriptions ---");
 	desc.add_options()
@@ -233,6 +236,11 @@ void parseComLine(int argc, char **argv, std::string &infile, std::string &popma
 		("three,3", opt::bool_switch(&three), "Use this option to run the F2 and F3 statistics.")
 		("four,4", opt::bool_switch(&four), "Use this option to run the F2, F3, and F4 statistics.")
 		("boot,b", opt::value<int>(&bootstrap)->required(), "specify the number of bootstrap replicates to perform.")
+		("phylip,P", opt::bool_switch(&phy), "Use this option to designate the input file as Phylip format.")
+		("structure,S", opt::bool_switch(&str), "Use this option to designate the input file as Structure format.")
+		("missing,M", opt::value<std::string>(&missing)->default_value("-9"), "OPTIONAL: specify the missing data value in a Structure file.")
+		("offset,O", opt::value<int>(&offset)->default_value(0), "OPTIONAL: specify the number of extra columns that precede genotype data in a structure file. Do not count sample names or whitespace.Entering too large of a value for this option will result in a segmentation fault.")
+
 	;
 
 	opt::variables_map vm;
@@ -275,6 +283,16 @@ void parseComLine(int argc, char **argv, std::string &infile, std::string &popma
 	if((two == true && three == true) || (three == true && four == true) || (two == true && four == true))
 	{
 		std::cerr << "You must select only one option to calculate F statistics." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	if(str == true && phy == true)
+	{
+		std::cerr << "You cannot specify both Structure and Phylip format in the same run of this program." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	if(str == false && phy == false)
+	{
+		std::cerr << "You must specify whether the input file is Structure or Phylip format." << std::endl;
 		exit(EXIT_FAILURE);
 	}
 	

@@ -169,9 +169,9 @@ void fnStats::calcF2(fnFiles &f, std::vector<double> &rv)
 		std::cout << std::endl;
 		*/
 	}
-	std::cout << std::endl << std::endl;
+	//std::cout << std::endl << std::endl;
 	double f2avg = f2total/(double)ancestral.size();
-	std::cout << "f2avg = " << f2avg << std::endl;
+	//std::cout << "f2avg = " << f2avg << std::endl;
 	rv.push_back(f2avg);
 }
 
@@ -244,11 +244,13 @@ void fnStats::calcF3(fnFiles &f, std::vector<double> &rv)
 		std::cout << std::endl;
 		*/
 	}
-	std::cout << std::endl << std::endl;
+	//std::cout << std::endl << std::endl;
 	double f2avg = f2total/(double)ancestral.size();
 	double f3avg = f3total/(double)ancestral.size();
+	/*
 	std::cout << "f2avg = " << f2avg << std::endl;
 	std::cout << "f3avg = " << f3avg << std::endl;
+	*/
 	rv.push_back(f2avg);
 	rv.push_back(f3avg);
 }
@@ -339,13 +341,15 @@ void fnStats::calcF4(fnFiles &f, std::vector<double> &rv)
 		std::cout << std::endl;
 		*/
 	}
-	std::cout << std::endl << std::endl;
+	//std::cout << std::endl << std::endl;
 	double f2avg = f2total/(double)ancestral.size();
 	double f3avg = f3total/(double)ancestral.size();
 	double f4avg = f4total/(double)ancestral.size();
+	/*
 	std::cout << "f2avg = " << f2avg << std::endl;
 	std::cout << "f3avg = " << f3avg << std::endl;
 	std::cout << "f4avg = " << f4avg << std::endl;
+	*/
 	rv.push_back(f2avg);
 	rv.push_back(f3avg);
 	rv.push_back(f4avg);

@@ -118,12 +118,23 @@ unsigned int fnFiles::getLength()
 	return now;
 }
 
-void fnFiles::readfiles(int vectorsize)
+void fnFiles::readfiles(int vectorsize, bool p, bool s, std::string missing, int offset)
 {
 	std::cout << "Reading files" << std::endl;
-	std::string missing = "-9";
-	readStructure(0,vectorsize,missing);
-	//readPhylip();
+	//std::string missing = "-9";
+	if(s==true)
+	{
+		readStructure(offset,vectorsize,missing);
+	}
+	else if(p==true)
+	{
+		readPhylip();
+	}
+	else
+	{
+		std::cerr << "Booleans for both structure and phylip file formats are true.  This code block should be unreachable - how did you get here?" << std::endl;
+		exit(EXIT_FAILURE);
+	}
 	std::cout << "blacklisting loci" << std::endl;
 	blacklist();
 }
@@ -162,7 +173,7 @@ void fnFiles::readStructure(int offset, int l, std::string m)
 					//if(counter%2 == 0) //on even numbered lines, put species name onto the species vector
 					for(int i=0; i<l; i++)
 					{
-						std::cout << i << std::endl;
+						//std::cout << i << std::endl;
 						if(tokens[i+offset] != m) //exclude missing data
 						{
 							data[ABCDmap[popmap[tokens[0]]]][i][tokens[i+offset]]+=1;
