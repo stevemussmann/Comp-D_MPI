@@ -118,12 +118,69 @@ unsigned int fnFiles::getLength()
 	return now;
 }
 
-void fnFiles::readfiles()
+void fnFiles::readfiles(int vectorsize)
 {
 	std::cout << "Reading files" << std::endl;
-	readPhylip();
+	std::string missing = "-9";
+	readStructure(0,vectorsize,missing);
+	//readPhylip();
 	std::cout << "blacklisting loci" << std::endl;
 	blacklist();
+}
+
+void fnFiles::readStructure(int offset, int l, std::string m)
+{
+	std::ifstream myfile(infile.c_str()); //convert file to stream
+	offset=offset+1;
+	int counter=0; //counter for line number of file
+
+	if(myfile.is_open())
+	{
+		std::string line; //string to temporarily hold line
+		while(getline(myfile,line))
+		{
+			std::vector<std::string> tokens; //vector to temporarily hold split line
+			std::istringstream iss(line); //convert to stream
+			copy(std::istream_iterator<std::string>(iss), std::istream_iterator<std::string>(), back_inserter(tokens)); //put stream into vector
+				
+			std::unordered_map<std::string,std::string>::const_iterator got = popmap.find(tokens[0]);
+			if(got == popmap.end() )
+			{
+				std::cout << "WARNING: sample " << tokens[0] << " not found in popmap and will not be used in calculations" << std::endl;
+				std::cout << "Verify that this is OK before interpreting your results." << std::endl << std::endl;
+			}
+			else
+			{
+				std::unordered_map<std::string,std::string>::const_iterator got2 = ABCDmap.find(popmap[tokens[0]]);
+				if(got2 == ABCDmap.end() )
+				{
+					std::cout << "Sample " << tokens[0] << " from population " << popmap[tokens[0]] << " is being ignored." << std::endl << std::endl;
+				}
+				else
+				{
+
+					//if(counter%2 == 0) //on even numbered lines, put species name onto the species vector
+					for(int i=0; i<l; i++)
+					{
+						std::cout << i << std::endl;
+						if(tokens[i+offset] != m) //exclude missing data
+						{
+							data[ABCDmap[popmap[tokens[0]]]][i][tokens[i+offset]]+=1;
+						}
+					}	
+					counter++;
+				}
+			}
+		}
+		myfile.close();
+	}
+	else
+	{
+		std::cerr << "Unable to open " << infile << std::endl;
+		std::cout.flush();
+		exit(EXIT_FAILURE);
+	}
+	
 }
 
 void fnFiles::readPhylip()

@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 	generator.seed(seed);
 
 	fnFiles f(infile, popmap, abcd, vsize);
-	f.readfiles();
+	f.readfiles(vsize);
 	std::vector<double> returnv;
 	if(two == true)
 	{

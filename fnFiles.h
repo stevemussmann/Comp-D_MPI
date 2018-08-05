@@ -9,7 +9,7 @@ class fnFiles {
 	public:
 		fnFiles(std::string i, std::string p, std::string a, int vectorsize);
 		fnFiles(fnFiles f, std::vector<int> &v, std::unordered_map<std::string,std::string> m);
-		void readfiles();
+		void readfiles(int vectorsize);
 		unsigned int getLength();
 		std::unordered_map <std::string,int> getLocus(std::string s, int i);
 		std::unordered_map <std::string,std::string> ABCDmap;
@@ -22,6 +22,7 @@ class fnFiles {
 		std::string outgroup;
 		std::string ABCDfile;
 		void readPhylip();
+		void readStructure(int offset, int l, std::string m);
 		void readPopfile();
 		void readABCDfile();
 		void blacklist();
