@@ -1,0 +1,3 @@
+groupA	A
+groupC	B
+outgroup	O

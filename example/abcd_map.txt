@@ -1,0 +1,5 @@
+groupA	A
+groupC	B
+groupE	C
+groupD	D
+outgroup	O
