@@ -21,3 +21,7 @@ To run the four-taxon test on the contents of taxafile.txt using the Phylip-form
 To run the same command on taxafile.txt using the Structure-formatted file:
 
 `mpirun -np 4 compDmpi -i example.str -t taxafile.txt -l 11899 -b 100 -o test.out -Z test.popZ.out -sd`
+
+To calculate f statistics on the abcd_map.txt file using the Phylip-formatted file:
+
+`fn -i example.phy -p popmap.txt -a abcd_map.txt -n 11899 -b 100 -4`
