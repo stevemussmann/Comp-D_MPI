@@ -1,21 +1,34 @@
 # Comp-D_MPI
-A program for comprehensive computation of D-statistics and population summaries using MPI
+A program for comprehensive computation of D-statistics and population summaries using MPI. This program calculates variations of Patterson's D-statistic, including the original ABBA-BABA test as well as the partitioned-D and Dfoil tests. An accessory program (fn) calculates the F2, F3, and F4 statistics.
 
-This program calculates variations of Patterson's D-statistic, including the original ABBA-BABA test as well as the partitioned-D and Dfoil tests.  A full user guide for the program is forthcoming.
+## Compilation and installation
 
-## Compilation
+To compile, you must have a recent version of the C++ Boost Libraries and GCC 4.8.1 or newer installed on your computer. Only Boost versions 1.53 and newer have been tested. Additionally, the Boost program_options library must be present, and this is sometimes not installed automatically with the remainder of the Boost libraries. Installation of these libraries can be handled through your system's package manager to ensure all necessary components are available. For example, this is accomplished in Ubuntu with the command:
 
-To compile, you must have a recent version of the C++ Boost Libraries and GCC 4.8.1 or newer installed on your computer. Only Boost versions 1.54 and newer have been tested. Additionally, the Boost program_options library must be present, and this is sometimes not installed automatically with the remainder of the Boost libraries. Installation of these libraries under Ubuntu is best handled through your system's package manager to ensure all necessary components are installed.  This is accomplished with the command:
+`sudo apt-get install libboost-dev libboost-program-options-dev libmpich2-dev autotools-dev autoconf`
 
-`sudo apt-get install libboost-dev libboost-program-options-dev`
+Under CentOS, a similar command can be used:
+
+`sudo yum install openmpi-devel boost-devel autoconf automake`
 
 Once all dependencies are installed, download the source code, change directories into the Comp-D_MPI folder, and compile by issuing the command:
 
-`make`
+`autoreconf
+./configure
+make
+sudo make install`
 
-To install the program to your path (/usr/local/bin), use the following command:
+You can test that the program installed successfully by displaying the help menu:
 
-`sudo make install`
+`mpirun -np 1 compDmpi -h`
+
+### Important note for CentOS
+If the configure command fails to find mpic++/mpicc, or if the  you may need to load the mpi module created by CentOS.  This is accomplished by the following command, which will need to be run in each new terminal session before executing compD:
+
+`module load mpi`
+
+### Conda installation
+A conda recipe for installation is under development. I am currently debugging issues encountered while compiling with MPI through conda.
 
 
 ## Input Files
