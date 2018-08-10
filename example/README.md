@@ -15,7 +15,9 @@
 
 ## Example commands
 To run the four-taxon test on the contents of taxafile.txt using the Phylip-formatted file:
+
 `mpirun -np 4 compDmpi -i example.phy -t taxafile.txt -i 11899 -b 100 -o test.out -Z test.popZ.out -Pd`
 
 To run the same command on taxafile.txt using the Structure-formatted file:
+
 `mpirun -np 4 compDmpi -i example.str -t taxafile.txt -i 11899 -b 100 -o test.out -Z test.popZ.out -sd`
