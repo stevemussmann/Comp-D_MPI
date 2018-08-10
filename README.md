@@ -24,12 +24,12 @@ You can test that the program installed successfully by displaying the help menu
 
 `mpirun -np 1 compDmpi -h`
 
-### Important note for CentOS
+#### Important note for CentOS
 If the configure command fails to find mpic++/mpicc, or if the  you may need to load the mpi module created by CentOS.  This is accomplished by the following command, which will need to be run in each new terminal session before executing compD:
 
 `module load mpi`
 
-### Conda installation
+#### Conda installation
 A conda recipe for installation is under development. I am currently debugging issues encountered while compiling with MPI through conda.
 
 
