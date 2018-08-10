@@ -1,0 +1,38 @@
+{% set name = "compD-mpi" %}
+{% set version = "1.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  md5: 2939329990ddf5272ba85c0b260f35cc
+  url: https://github.com/smussmann82/Comp-D_MPI/archive/1.0.tar.gz
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - autoconf
+    - automake
+    - mpi
+  host:
+    - boost-cpp
+    - openmpi
+  run:
+    - boost-cpp
+    - openmpi
+
+test:
+  commands:
+    - mpirun -np 1 compDmpi -h
+about:
+  home: "https://github.com/smussmann82/Comp-D_MPI"
+  license: "https://github.com/smussmann82/Comp-D_MPI/blob/master/LICENSE"
+  summary: "compD: for calculating D-statistics"
+
+extra:
+  identifiers:
+          - biotools:compD
