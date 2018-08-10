@@ -1,0 +1,4 @@
+outgroup001 outgroup002 outgroup003 outgroup004 outgroup005
+popF001 popF002 popF003 popF004 popF005 popF006 popF007 popF008 popF009 popF010
+popH002 popH003 popH004 popH005 popH006 popH007 popH008 popH009 popH011 popH012
+popJ001 popJ002 popJ003 popJ004 popJ005 popJ006 popJ007 popJ008 popJ009 popJ010
