@@ -3,11 +3,11 @@ A program for comprehensive computation of D-statistics and population summaries
 
 ## Compilation and installation
 
-To compile, you must have a recent version of the C++ Boost Libraries and GCC 4.8.1 or newer installed on your computer. Only Boost versions 1.53 and newer have been tested. Additionally, the Boost program_options library must be present, and this is sometimes not installed automatically with the remainder of the Boost libraries. Installation of these libraries can be handled through your system's package manager to ensure all necessary components are available. For example, this is accomplished in Ubuntu with the command:
+To compile, you must have a recent version of the C++ Boost Libraries and GCC 4.8.1 or newer installed on your computer. Only Boost versions 1.53 and newer have been tested. Additionally, the Boost program_options library must be present, and this is sometimes not installed automatically with the remainder of the Boost libraries. Installation of these libraries can be handled through your system's package manager to ensure all necessary components are available. For example, this is accomplished in **Ubuntu** with the command:
 
 `sudo apt-get install libboost-dev libboost-program-options-dev libmpich2-dev autotools-dev autoconf`
 
-Under CentOS, a similar command can be used:
+Under **CentOS**, a similar command can be used:
 
 `sudo yum install openmpi-devel boost-devel autoconf automake`
 
@@ -23,6 +23,8 @@ sudo make install
 You can test that the program installed successfully by displaying the help menu:
 
 `mpirun -np 1 compDmpi -h`
+
+
 
 #### Important note for CentOS
 If the configure command fails to find mpic++/mpicc, or if the  you may need to load the mpi module created by CentOS.  This is accomplished by the following command, which will need to be run in each new terminal session before executing compD:
