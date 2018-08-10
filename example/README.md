@@ -24,4 +24,4 @@ To run the same command on taxafile.txt using the Structure-formatted file:
 
 To calculate f statistics on the abcd_map.txt file using the Phylip-formatted file:
 
-`fn -i example.phy -p popmap.txt -a abcd_map.txt -n 11899 -b 100 -4`
+`fn -i example.phy -p popmap.txt -a abcd_map.txt -n 11899 -b 100 -4 -P`
