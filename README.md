@@ -13,10 +13,12 @@ Under CentOS, a similar command can be used:
 
 Once all dependencies are installed, download the source code, change directories into the Comp-D_MPI folder, and compile by issuing the command:
 
-`autoreconf
+```
+autoreconf
 ./configure
 make
-sudo make install`
+sudo make install
+```
 
 You can test that the program installed successfully by displaying the help menu:
 
