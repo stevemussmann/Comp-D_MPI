@@ -82,6 +82,9 @@ For each of the D test options, the program can handle heterozygous loci in one 
 * **-o / --outfile** Specify the name of the output file that contains test results (default = "outfile.txt")
 * **-Z / --popstats** Specify the name of the output file that will contain population summary Z-scores (default = "popZscores.txt")
 
+## Memory Usage:
+Because this program is MPI-enabled, memory usage will increase linearly with the number of processor cores used.  Larger datasets will also use greater amounts of memory.  For example, a dataset containing 184 individuals and 179,811 SNPs was found to use ~2.9 GB per processor core. If the program crashes while calculating the first D-statistic test, it has likely run out of memory.  To verify, you can watch memory usage on your computer in real time using the `top` command to view resources being used by all processes running on your computer.
+
 ## Running the program - Example:
 Imagine that you have a Phylip-formatted genotype file named "genotypes.phy" and a taxa file named "taxa.txt" which contains the taxa listed in the input file example listed above.  The file contains 14,000 SNPs, and you want to perform the four-taxon D-statistic test using the SNP frequency formulas to handle heterozygotes.  You also want to conduct 1000 bootstrap replicates for assessing significance of each test, and have 4 processor cores available to you for parallelization of the bootstrap procedure.  These options can be implemented with the following command:
 ```
