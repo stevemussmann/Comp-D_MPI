@@ -49,7 +49,8 @@ void parseComLine(string &infile, string &taxafile, int &locnumber,
         int &bootstrap, string &output, int argc, char **argv, 
         bool &fourtaxflag, bool &partDflag, bool &Dfoilflag, 
         bool &Nremoveflag, bool &gapignoreflag, bool &strflag, bool &phylip, 
-	bool &hetIgnore, bool &hetInclude, string &popoutput, int &my_rank);
+	bool &hetIgnore, bool &hetInclude, string &popoutput, std::string &missing,
+	int &offset, int &my_rank);
 
 
 int main(int argc, char** argv) {
@@ -85,11 +86,14 @@ int main(int argc, char** argv) {
     bool hetInclude = false; //uses all heterozygote information for calculations
     bool strflag = false; //turn on to input a structure file
     bool phylip = false; //turn on to input a phylip file
+    std::string missing;
+    int offset;
     
     //parse the command line
     parseComLine(infile, taxafile, locnumber, bootstrap, output, argc, argv, 
 		 fourtaxflag, partDflag, Dfoilflag, Nremoveflag, gapignoreflag, 
-		 strflag, phylip, hetIgnore, hetInclude, popoutput, my_rank);
+		 strflag, phylip, hetIgnore, hetInclude, popoutput, missing,
+		 offset, my_rank);
     
     //calculate number of bootstraps per processor
     int mpiboot = bootstrap/p;
@@ -123,7 +127,7 @@ int main(int argc, char** argv) {
     
     if(strflag == true)
     {
-        newfile.readInput(infile, locnumber, 0);
+        newfile.readInput(infile, locnumber, offset);
         
     }
     else if( phylip == true)
@@ -336,26 +340,29 @@ void combinations(vector<vector<string> > &array, unsigned int i, vector<string>
 void parseComLine(string &infile, string &taxafile, int &locnumber, int &bootstrap, 
         string &output, int argc, char **argv, bool &fourtaxflag, bool &partDflag, 
         bool &Dfoilflag, bool &Nremoveflag, bool &gapignoreflag, bool &strflag, 
-        bool &phylip, bool &hetIgnore, bool &hetInclude, string &popoutput, int &my_rank)
+        bool &phylip, bool &hetIgnore, bool &hetInclude, string &popoutput, std::string &missing,
+	int &offset, int &my_rank)
 {
     opt::options_description desc("--- Option Descriptions ---");
     desc.add_options()
-            ("help,h", "Prints this help message.")
-            ("infile,i", opt::value<string>(&infile)->required(), "Specifies the input alleles file name.")
-            ("taxa,t", opt::value<string>(&taxafile)->required(), "Specifies the input list of taxa.")
-            ("bootstrap,b", opt::value<int>(&bootstrap)->required(), "Specifies the number of bootstrap replicates to be performed.")
-            ("loci,l", opt::value<int>(&locnumber)->required(), "Specifies the number of loci in the input file.")
-            ("fourtax,d", opt::bool_switch(&fourtaxflag), "Turns on the 4-taxon Test.")
-            ("partition,p", opt::bool_switch(&partDflag), "Turns on the Partitioned-D Test.")
-            ("foil,f", opt::bool_switch(&Dfoilflag), "Turns on the Dfoil Test.")
-            ("gap,g", opt::bool_switch(&gapignoreflag), "Turns on the function to ignore gaps in sequences.")
-            ("nremove,n", opt::bool_switch(&Nremoveflag), "Turns on the function to remove Ns from sequences.")
-	    ("hignore,I", opt::bool_switch(&hetIgnore), "Turns on function to ignore any heterozygous loci.")
-	    ("hinclude,H", opt::bool_switch(&hetInclude), "Turns on function to include all heterozygote information in calculations.")
-            ("structure,s", opt::bool_switch(&strflag), "Use this option to input a structure file.")
-            ("phylip,P", opt::bool_switch(&phylip), "Use this option to input a phylip file.")
-            ("outfile,o", opt::value<string>(&output)->default_value("outfile.txt"), "Specifies the name of the output file.")
-            ("popstats,Z", opt::value<string>(&popoutput)->default_value("popZscores.txt"), "Specifies the name of the output file containing population summary Z scores.")
+        ("help,h", "Prints this help message.")
+        ("infile,i", opt::value<string>(&infile)->required(), "Specifies the input alleles file name.")
+        ("taxa,t", opt::value<string>(&taxafile)->required(), "Specifies the input list of taxa.")
+        ("bootstrap,b", opt::value<int>(&bootstrap)->required(), "Specifies the number of bootstrap replicates to be performed.")
+        ("loci,l", opt::value<int>(&locnumber)->required(), "Specifies the number of loci in the input file.")
+        ("fourtax,d", opt::bool_switch(&fourtaxflag), "Turns on the 4-taxon Test.")
+        ("partition,p", opt::bool_switch(&partDflag), "Turns on the Partitioned-D Test.")
+        ("foil,f", opt::bool_switch(&Dfoilflag), "Turns on the Dfoil Test.")
+        ("gap,g", opt::bool_switch(&gapignoreflag), "Turns on the function to ignore gaps in sequences.")
+        ("nremove,n", opt::bool_switch(&Nremoveflag), "Turns on the function to remove Ns from sequences.")
+	("hignore,I", opt::bool_switch(&hetIgnore), "Turns on function to ignore any heterozygous loci.")
+	("hinclude,H", opt::bool_switch(&hetInclude), "Turns on function to include all heterozygote information in calculations.")
+        ("structure,s", opt::bool_switch(&strflag), "Use this option to input a structure file.")
+        ("phylip,P", opt::bool_switch(&phylip), "Use this option to input a phylip file.")
+        ("outfile,o", opt::value<string>(&output)->default_value("outfile.txt"), "Specifies the name of the output file.")
+        ("popstats,Z", opt::value<string>(&popoutput)->default_value("popZscores.txt"), "Specifies the name of the output file containing population summary Z scores.")
+	("missing,M", opt::value<std::string>(&missing)->default_value("-9"), "OPTIONAL: specify the missing data value in a Structure file.")
+	("offset,O", opt::value<int>(&offset)->default_value(0), "OPTIONAL: specify the number of extra columns that precede genotype data in a Structure file. Do not count sample names or whitespace. Entering too large of a value for this option will result in a segmentation fault.")
     ;
     
     opt::variables_map vm;
