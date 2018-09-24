@@ -115,6 +115,10 @@ As you may have already noticed, two methods are offered for assessing significa
 The second file (popZscores.txt) offers a test of significance across all tests performed for a single run of compD.  This allows you to test whether a population shows significant evidence of introgression.  This computes a Z-score using the results of all tests calculated during a single run of the program, so it avoids performing the bootstrapping procedure that is necessary for the Z-score calculations you find in the outfile.txt file.  **Important: In order for this option to produce a meaningful result, you must input samples for the taxa of interest that represent members of the same populations.**
 
 ## List of bug fixes, additions, and other changes:
+2018-09-24:
+* Added command line option to compD which allows the user to specify the number of extra columns in a Structure-formatted file. This will allow Structure input to be more flexible.
+* The program fn is still in development.
+
 2018-08-10:
 * Switched to compilation with autotools. Conda installation recipe is under development
 
