@@ -1,5 +1,7 @@
 # Comp-D_MPI
-A program for comprehensive computation of D-statistics and population summaries using MPI. This program calculates variations of Patterson's D-statistic, including the original ABBA-BABA test as well as the partitioned-D and Dfoil tests. An accessory program (fn) calculates the F2, F3, and F4 statistics.
+A program for comprehensive computation of D-statistics and population summaries using MPI. This program calculates variations of Patterson's D-statistic, including the original ABBA-BABA test as well as the partitioned-D and Dfoil tests. 
+
+An accessory program (fn) is currently under development which will calculate the F2, F3, and F4 statistics.
 
 ## Compilation and installation
 
@@ -32,7 +34,12 @@ If the configure command fails to find mpic++/mpicc, or if the  you may need to 
 `module load mpi`
 
 #### Conda installation
-A conda recipe for installation is under development. I am currently debugging issues encountered while compiling with MPI through conda.
+A conda recipe for installation is under development. I am currently debugging issues encountered while compiling with MPI through conda. 
+
+#### For Mac users
+Although the conda installation does not yet work, you can still install dependencies through conda:
+
+`conda install -c condo-forge -c anaconda -c mpi4py openmpi mpich2 autoconf automake boost boost-cpp`
 
 
 ## Input Files
