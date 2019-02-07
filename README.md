@@ -3,6 +3,9 @@ A program for comprehensive computation of D-statistics and population summaries
 
 An accessory program (fn) is currently under development which will calculate the F2, F3, and F4 statistics.
 
+## Citation
+Mussmann, SM, MR Douglas, MR Bangs, and ME Douglas. 2019. COMP-D: a program for comprehensive computation of D-statistics and population summaries of reticulated evolution. *Conservation Genetics Resources* Accepted.
+
 ## Compilation and installation
 
 To compile, you must have a recent version of the C++ Boost Libraries and GCC 4.8.1 or newer installed on your computer. Only Boost versions 1.53 and newer have been tested. Additionally, the Boost program_options library must be present, and this is sometimes not installed automatically with the remainder of the Boost libraries. Installation of these libraries can be handled through your system's package manager to ensure all necessary components are available. For example, this is accomplished in **Ubuntu** with the command:
