@@ -4,7 +4,7 @@ A program for comprehensive computation of D-statistics and population summaries
 An accessory program (fn) is currently under development which will calculate the F2, F3, and F4 statistics.
 
 ## Citation
-Mussmann, SM, MR Douglas, MR Bangs, and ME Douglas. 2019. COMP-D: a program for comprehensive computation of D-statistics and population summaries of reticulated evolution. *Conservation Genetics Resources* Accepted.
+Mussmann, SM, MR Douglas, MR Bangs, and ME Douglas. 2020. COMP-D: a program for comprehensive computation of D-statistics and population summaries of reticulated evolution. *Conservation Genetics Resources* 12(2): 263-267.
 
 ## Compilation and installation
 
