@@ -36,8 +36,11 @@ If the configure command fails to find mpic++/mpicc you may need to load the mpi
 
 `module load mpi`
 
+#### Important note for Ubuntu 20.04
+A user reported they were unable to compile with libmpich2-dev (i.e., they received compilation errors related to MPI). Try instead installing libmpich-dev if you encounter this issue.
+
 #### Conda installation
-A conda recipe for installation is under development. I am currently debugging issues encountered while compiling with MPI through conda. 
+A user reported problems compiling and installing on a system where Conda is present. If you experience problems, try disabling Conda. 
 
 #### For Mac users
 Although the conda installation does not yet work, you can still install dependencies through conda:
