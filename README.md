@@ -10,7 +10,9 @@ Mussmann, SM, MR Douglas, MR Bangs, and ME Douglas. 2020. COMP-D: a program for 
 
 To compile, you must have a recent version of the C++ Boost Libraries and GCC 4.8.1 or newer installed on your computer. Only Boost versions 1.53 and newer have been tested. Additionally, the Boost program_options library must be present, and this is sometimes not installed automatically with the remainder of the Boost libraries. Installation of these libraries can be handled through your system's package manager to ensure all necessary components are available. For example, this is accomplished in **Ubuntu** with the command:
 
-`sudo apt-get install libboost-dev libboost-program-options-dev libmpich2-dev autotools-dev autoconf`
+```
+sudo apt-get install libboost-dev libboost-program-options-dev libmpich-dev autotools-dev autoconf
+```
 
 Under **CentOS**, a similar command can be used:
 
