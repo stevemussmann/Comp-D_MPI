@@ -33,18 +33,18 @@ You can test that the program installed successfully by displaying the help menu
 
 
 
-#### Important note for CentOS
+### Important note for CentOS
 If the configure command fails to find mpic++/mpicc you may need to load the mpi module created by CentOS.  This is accomplished by the following command, which will need to be run in each new terminal session before executing compD:
 
 `module load mpi`
 
-#### Important note for Ubuntu versions < 20.04
-If you are still using an old version of Ubuntu, you may need to install libmpich2-dev instead of libmpich-dev.
+### Important note for Ubuntu versions < 20.04
+If you are still using an old version of Ubuntu, you may need to install `libmpich2-dev` instead of `libmpich-dev`.
 
-#### Conda installation
+### Conda installation
 A user reported problems compiling and installing on a system where Conda is present. If you experience problems, try disabling Conda. 
 
-#### For Mac users
+### For Mac users
 Although the conda installation does not yet work, you may still be able to install dependencies through conda. I have not tested any of this code on the newer Apple M series processors.
 
 `conda install -c condo-forge -c anaconda -c mpi4py openmpi mpich2 autoconf automake boost boost-cpp`
