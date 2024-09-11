@@ -47,7 +47,7 @@ A user reported problems compiling and installing on a system where Conda is pre
 ### For Mac users
 Although the conda installation does not yet work, you may still be able to install dependencies through conda. I have not tested any of this code on the newer Apple M series processors.
 
-`conda install -c condo-forge -c anaconda -c mpi4py openmpi mpich2 autoconf automake boost boost-cpp`
+`conda install -c conda-forge -c anaconda -c mpi4py openmpi mpich2 autoconf automake boost boost-cpp`
 
 
 ## Input Files
