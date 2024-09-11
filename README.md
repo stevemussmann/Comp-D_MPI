@@ -39,7 +39,7 @@ If the configure command fails to find mpic++/mpicc you may need to load the mpi
 `module load mpi`
 
 #### Important note for Ubuntu versions < 20.04
-If you are still using an old version of Ubuntu, you may need to instal libmpich2-dev instead of libmpich-dev.
+If you are still using an old version of Ubuntu, you may need to install libmpich2-dev instead of libmpich-dev.
 
 #### Conda installation
 A user reported problems compiling and installing on a system where Conda is present. If you experience problems, try disabling Conda. 
